@@ -1,0 +1,8 @@
+Unix commands:
+
+watch-book [true | false]
+backup-book name
+get-book name
+
+The true or false for watch-book controls whether hashes are shown. Should be true for development.
+The name referred to above is the name of the book, or chapter; for example, debounce-custom-hook.
