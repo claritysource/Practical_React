@@ -1,0 +1,43 @@
+1  import React, {useState, useEffect} from 'react';
+2  import './App.css';
+3  
+4  const MouseTracker = ({render}) =&gt; {
+5    const [mouseLocation, setMouseLocation] = useState({x: 0, y: 0});
+6    
+7    useEffect(() =&gt; {
+8      const listener =
+9        window.addEventListener('mousemove',
+10         e =&gt; setMouseLocation({x: e.clientX, y: e.clientY}))
+11 
+12     return () =&gt; window.removeEventListener('mousemove', listener);
+13   }, [])
+14 
+15   return render(mouseLocation.x, mouseLocation.y)
+16 }
+17 
+18 const Solution = () =&gt; {
+19   const showMouseCoordinatesInListItems = (x, y) =&gt;
+20     &lt;ul&gt;
+21       &lt;li&gt;{`${x}`}&lt;/li&gt;
+22       &lt;li&gt;{`${y}`}&lt;/li&gt;
+23     &lt;/ul&gt;
+24 
+25   const showMouseCoordinatesInAnH3Element = (x, y) =&gt;
+26     &lt;h3&gt;
+27       {`(${x}, ${y})`}
+28     &lt;/h3&gt;
+29 
+30   return (
+31     &lt;&gt;
+32       &lt;MouseTracker&gt;
+33         render={showMouseCoordinatesInListItems}&gt;
+34       &lt;/MouseTracker&gt;
+35 
+36       &lt;MouseTracker&gt;
+37         render={showMouseCoordinatesInAnH3Element}&gt;
+38       &lt;/MouseTracker&gt;
+39     &lt;/&gt;
+40   );
+41 }
+42 
+43 export default Solution;

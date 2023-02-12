@@ -1,0 +1,187 @@
+<html xmlns='http://www.w3.org/1999/xhtml' xmlns:dk='http://www.kirsanov.com'>
+  <head>
+    <title>Modal</title>  
+    <meta http-equiv='content-type' content='text/html; charset=UTF-8'/>  
+    <link rel='stylesheet' type='text/css' href='./css/book.css'/>  
+  </head>  
+  <body style='counter-reset: h1 2'> 
+    <h1 class='basic'>Modal</h1> 
+      <p>This exercise involves...</p>
+
+    <h2>Rationale</h2>
+      <p></p>
+
+    <h2>Expectations</h2>
+      <p></p>
+
+    <h2>Level of Difficulty</h2>
+      <p>X out of 10</p>
+
+    <h2 id='concepts'>Concepts</h2> 
+      <p></p>
+    <h2 id='exercise-description'>The Exercise Description</h2> 
+      <p></p>
+    <p>The starting point for the Get Timestamp from Server exercise is shown in the following figure.</p>
+    <img src="./images/start.png" width="974" height="874"/>
+      
+      <pre id='sec1-1'>
+1  import React from 'react';
+2  
+3  const Start = () =&gt; {
+4    const buttonStyle = {
+5      fontSize: '1.5em',
+6      backgroundColor: 'sky-blue',
+7      color: 'blue',
+8      cursor: 'pointer',
+9    };
+10 
+11   return (
+12     &lt;&gt;
+13       &lt;button 
+14         className='btn btn-primary'&gt;
+15         Show Modal
+16       &lt;/button&gt;
+17     &lt;/&gt;
+18   );
+19 }
+20 
+21 export default Start;
+</pre>
+
+<p></p>
+
+      <img src="./images/solution-1.png" width="974" height="874"/>
+    <p>...</p>
+
+<p></p>
+
+      <img src="./images/solution-2.png" width="974" height="874"/>
+    <p>...</p>
+      <img src="./images/solution-3.png" width="974" height="874"/>
+    <p>...</p>
+      <pre id='sec1-1'>
+1  import React from 'react'
+2  import './Modal.css'
+3  
+4  const Modal = React.forwardRef((props, backdropRef) =&gt; {
+5    return (
+6      &lt;div className='modal-wrapper'&gt;
+7        &lt;div ref={backdropRef} className='modal-backdrop'/&gt;
+8  
+9        &lt;div className='modal-box'&gt;
+10         {props.children}
+11       &lt;/div&gt;
+12     &lt;/div&gt;
+13   )
+14 })
+15 
+16 export default Modal
+      </pre>
+    <p>...</p>
+      <pre id='sec1-1'>
+1  import React from 'react'
+2  import Modal from './Modal'
+3  
+4  const Solution = () =&gt; {
+5    const [modalVisible, setModalVisible] = React.useState(false)
+6    const [modalText, setModalText] = React.useState('')
+7  
+8    const inputRef = React.useRef()
+9    const backdropRef = React.useRef()
+10 
+11   const buttonStyle = {
+12     fontSize: '1.5em',
+13     backgroundColor: 'sky-blue',
+14     color: 'blue',
+15     cursor: 'pointer',
+16   };
+17 
+18   React.useEffect(() =&gt; {
+19     if (inputRef.current) {
+20       inputRef.current.focus()
+21     }
+22   }, [modalVisible])
+23 
+24   React.useEffect(() =&gt; {
+25     const callback = e =&gt; {
+26       if (backdropRef.current && backdropRef.current === e.target) {
+27         hideModal()
+28       }
+29     }
+30 
+31     window.addEventListener('click', callback)
+32 
+33     return () =&gt; window.removeEventListener('click', callback)
+34   }, [])
+35   
+36   const showModal = () =&gt; {
+37     setModalVisible(true)
+38     setModalText('')
+39   }
+40 
+41   const hideModal = () =&gt; {
+42     setModalVisible(false)
+43   }
+44 
+45   const handleKeyPress = e =&gt; {
+46     if (e.charCode === 13) {
+47       hideModal()
+48     }
+49   }
+50 
+51   return (
+52     &lt;div&gt;
+53       &lt;button
+54         className='btn btn-primary'
+55         onClick={showModal}
+56       &gt;
+57         Show Modal
+58       &lt;/button&gt;
+59 
+60       {
+61         modalVisible && 
+62           &lt;Modal
+63             title='A Modal'
+64             ref={backdropRef}
+65           &gt;
+66             &lt;div&gt;
+67               &lt;label htmlFor='input'&gt;Type Something:&nbsp;&nbsp;&lt;/label&gt;
+68               &lt;input
+69                 className='modal-input'
+70                 id='input'
+71                 ref={inputRef}
+72                 onChange={e =&gt; setModalText(e.target.value)}
+73                 onKeyPress={e =&gt; handleKeyPress(e)}
+74               /&gt;
+75 
+76               &lt;div&gt;
+77                 &lt;button
+78                   className='btn btn-primary modal-button'
+79                   onClick={hideModal}&gt;
+80                   Hide
+81                 &lt;/button&gt;
+82               &lt;/div&gt;
+83             &lt;/div&gt;
+84           &lt;/Modal&gt;
+85       }
+86       {
+87        modalVisible ? '' : &lt;div&gt;{modalText}&lt;/div&gt;
+88       }
+89     &lt;/div&gt;
+90   );
+91 }
+92 
+93 export default Solution;
+      </pre>
+    <p>...</p>
+    <h2 id='start'>The Solution</h2> 
+    <p></p>
+    <p>The <code>Solution</code> component for this coding exercise is shown in the following listing.</p>
+  </body> 
+</html>
+
+<p></p>
+
+<h1>Conclusion</h1>
+
+<p></p>

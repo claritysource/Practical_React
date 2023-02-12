@@ -1,0 +1,16 @@
+1  import React from 'react'
+2  import './Modal.css'
+3  
+4  const Modal = React.forwardRef((props, backdropRef) =&gt; {
+5    return (
+6      &lt;div className='modal-wrapper'&gt;
+7        &lt;div ref={backdropRef} className='modal-backdrop'/&gt;
+8  
+9        &lt;div className='modal-box'&gt;
+10         {props.children}
+11       &lt;/div&gt;
+12     &lt;/div&gt;
+13   )
+14 })
+15 
+16 export default Modal

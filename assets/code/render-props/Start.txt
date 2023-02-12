@@ -1,0 +1,35 @@
+1  import React from 'react';
+2  import './App.css';
+3  import './Start.css';
+4  
+5  const MouseTracker = () =&gt; {
+6    // IMPLEMENT
+7    return null;
+8  }
+9  
+10 const Start = () =&gt; {
+11   const showMouseCoordinatesInListItems = (x, y) =&gt;
+12     &lt;ul&gt;
+13       &lt;li&gt;{`${x}`}&lt;/li&gt;
+14       &lt;li&gt;{`${y}`}&lt;/li&gt;
+15     &lt;/ul&gt;
+16 
+17   const showMouseCoordinatesInAnH3Element = (x, y) =&gt;
+18     &lt;h3&gt;
+19       {`(${x}, ${y})`}
+20     &lt;/h3&gt;
+21 
+22   return (
+23     &lt;&gt;
+24       &lt;MouseTracker&gt;
+25         render={showMouseCoordinatesInListItems}
+26       &lt;/MouseTracker&gt;
+27 
+28       &lt;MouseTracker&gt;
+29         render={showMouseCoordinatesInAnH3Element}
+30       &lt;/MouseTracker&gt;
+31     &lt;/&gt;
+32   );
+33 }
+34 
+35 export default Start;

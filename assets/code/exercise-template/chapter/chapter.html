@@ -1,0 +1,34 @@
+<html xmlns='http://www.w3.org/1999/xhtml' xmlns:dk='http://www.kirsanov.com'>
+  <head>
+    <title>The Application</title>  
+    <meta http-equiv='content-type' content='text/html; charset=UTF-8'/>  
+    <link rel='stylesheet' type='text/css' href='./css/book.css'/>  
+  </head>  
+  <body style='counter-reset: h1 2'> 
+    <h1 class='basic'>Extracting Components</h1> 
+      <p>
+        This is a React functional component that implements an interactive exercise or tutorial. It uses the useState hook from the React library to manage the visibility of the solution.
+      </p>
+        The component has three child components: Instructions, Start, and Solution. The Instructions component displays the title of the exercise and a button to toggle the visibility of the solution.
+        The main content of the exercise is displayed in the work-area div. Depending on the value of solutionVisible, either the Solution component or the Start component is displayed.
+        When the button in the Instructions component is clicked, the value of solutionVisible is toggled, which updates the visibility of the solution.
+        Finally, the component is exported as the default export.
+      </p>
+    </pre>
+
+    <h2 id='start'>The Solution</h2> 
+      <p>The <code>Solution</code> component for this coding exercise is shown in the following listing.</p>
+      <pre id='sec1-1'>
+      .selected-user {
+        margin-bottom: 1em;
+      }
+
+      .dropdown-label {
+        margin-right: 1em;
+      }
+      </pre>
+
+<h1>Conclusion</h1>
+
+<p>In this coding exercise we discussed extracting a component from an existing component's markup. That extraction is a commonplace task for React developers.</p>
+<p>Extracting components results in many benefits, including the creation of a general component that can be reused in many different domain-specific situations.</p>

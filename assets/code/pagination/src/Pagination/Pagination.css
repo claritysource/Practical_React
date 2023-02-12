@@ -1,0 +1,24 @@
+.pagination-container {
+  display: flex;
+  justify-content: center;
+}
+
+.next {
+  display: inline-block;
+  margin-left: 1em;
+}
+
+.prev {
+  display: inline-block;
+  margin-right: 1em;
+}
+
+.page-links {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  display: inline-block;
+}
+
+.btn-link {
+  color: blue;
+}

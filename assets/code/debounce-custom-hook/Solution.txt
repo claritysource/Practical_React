@@ -1,0 +1,86 @@
+1  import React, {useRef, useState, useEffect} from 'react';
+2  import './App.css';
+3  
+4  const useFetch = (url, setDebounced) =&gt; {
+5    const [loading, setLoading] = useState(false)
+6    const [error, setError] = useState('')
+7    const [items, setItems] = useState([])
+8  
+9    useEffect(() =&gt; {
+10     const fetchItems = async () =&gt; {
+11       const response = await fetch(url)
+12       const data = await response.json()
+13 
+14       if (!data.error) {
+15         setItems(data.items)
+16       }
+17       else {
+18         setError(data.error)
+19       }
+20 
+21       setLoading(false)
+22       setDebounced(false)
+23     }
+24 
+25     if (url) {
+26       setLoading(true)
+27       fetchItems()
+28     }
+29   }, [url, setDebounced])
+30 
+31   return [loading, items, error]
+32 }
+33 
+34 const useDebounce = (value, debounceDelay) =&gt; {
+35   const [debounced, setDebounced] = useState(false)
+36 
+37   useEffect(() =&gt; {
+38     setDebounced(false)
+39 
+40     if (value) {
+41       const timeout = setTimeout(() =&gt; {
+42         setDebounced(true)
+43       }, debounceDelay)
+44 
+45       return () =&gt; clearTimeout(timeout)
+46     }
+47   }, [value, debounceDelay])
+48 
+49   return [debounced, setDebounced];
+50 }
+51 
+52 const Solution = React.memo(() =&gt; {
+53   const URL = 'https://www.googleapis.com/books/v1/volumes?q='
+54   const inputRef = useRef();
+55 
+56   const [query, setQuery] = useState('')
+57   const [debounced, setDebounced] = useDebounce(query, 1000)
+58   const [loading, items, error] = useFetch(debounced ? `${URL}/${query}` : '', setDebounced)
+59 
+60   useEffect(() =&gt; {
+61     if (inputRef.current) {
+62       inputRef.current.focus()
+63     }
+64   }, [])
+65 
+66   return (
+67     &lt;div&gt;
+68       &lt;label htmlFor='query-input'&gt;Search For &lt;/label&gt;
+69       &lt;input ref={inputRef} type='text' onChange={e =&gt; setQuery(e.target.value)} id='query-input' /&gt;
+70 
+71       &lt;div style={{marginTop: '20px'}}&gt;
+72         { loading ? &lt;div&gt;Loading...&lt;/div&gt; :
+73           error   ? &lt;div&gt;{error.message}&lt;/div&gt; :
+74           items   ?
+75           &lt;div&gt;
+76             {items.map(i =&gt; 
+77               &lt;div key={i.id}&gt;{i.volumeInfo.title}&lt;/div&gt;
+78             )}
+79           &lt;/div&gt; : null
+80       }
+81       &lt;/div&gt;
+82     &lt;/div&gt;
+83   )
+84 })
+85 
+86 export default Solution;

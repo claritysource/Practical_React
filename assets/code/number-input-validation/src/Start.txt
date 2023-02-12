@@ -1,0 +1,24 @@
+import React from 'react'
+import './Start.css'
+
+const NumberInput = () =&gt; {
+  return (
+    &lt;div&gt;
+      Implement a Number Input component here
+    &lt;/div&gt;
+  )
+}
+
+const Start = () =&gt; {
+  return (
+    &lt;&gt;
+      &lt;div className='prompt'&gt;
+        Enter a number between 1 and 99
+      &lt;/div&gt;
+
+      &lt;NumberInput /&gt;
+    &lt;/&gt;
+  )
+}
+
+export default Start

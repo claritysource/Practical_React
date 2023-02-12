@@ -1,0 +1,18 @@
+import React from 'react'
+import './Pagination.css'
+
+const NextLink = ({
+  pageNumber,
+  numPages,
+  updatePage
+}) =&gt; {
+  return (
+    &lt;div
+      className='next btn-link pointer'
+      onClick={() =&gt; updatePage(pageNumber + 1)}&gt;
+      { pageNumber &lt; numPages ? 'Next' : '' }
+    &lt;/div&gt;
+  )
+}
+
+export default NextLink

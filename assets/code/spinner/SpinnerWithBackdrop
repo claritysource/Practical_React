@@ -1,0 +1,19 @@
+import React from 'react'
+import Spinner from './Spinner'
+
+const SpinnerWithBackdrop = ({
+  condition,
+  bgColor='rgba(0,0,0,0.4)',
+  children,
+}) =&gt; 
+  &lt;div&gt;
+  {condition &&
+    &lt;div className='busy-spinner-container'
+         style={condition ? {backgroundColor: bgColor} : {}}&gt;
+      &lt;Spinner /&gt;
+    &lt;/div&gt;
+  }
+    {children}
+  &lt;/div&gt;
+
+export default SpinnerWithBackdrop

@@ -1,0 +1,38 @@
+import React, {useRef, useState} from 'react';
+import './App.css';
+
+const useFetch = url =&gt; {
+  // Replace the following line of code with the custom hook implementation
+  return [false, [], '']
+} 
+
+const App = () =&gt; {
+  const URL = 'https://www.googleapis.com/books/v1/volumes?q=';
+  const inputRef = useRef()
+  const [query, setQuery] = useState('')
+  const [url, setUrl] = useState('')
+  const [loading, items, error] = useFetch(url)
+  
+  const submitForm = e =&gt; {
+    e.preventDefault()
+    setUrl(prevUrl =&gt; query ? `${URL}/${query}` : '')
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;form onSubmit={submitForm}&gt;
+        &lt;label htmlFor='query-input'&gt;Search For &lt;/label&gt;
+        &lt;input
+          ref={inputRef}
+          type='text'
+          onChange={e =&gt; setQuery(e.target.value)} id='query-input' /&gt;
+      &lt;/form&gt;
+
+      &lt;div style={{marginTop: '20px'}}&gt;
+        Show the list of books here
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default App;

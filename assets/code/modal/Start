@@ -1,0 +1,21 @@
+import React from 'react';
+
+const Start = () =&gt; {
+  const buttonStyle = {
+    fontSize: '1.5em',
+    backgroundColor: 'sky-blue',
+    color: 'blue',
+    cursor: 'pointer',
+  };
+
+  return (
+    &lt;&gt;
+      &lt;button 
+        className='btn btn-primary'&gt;
+        Show Modal
+      &lt;/button&gt;
+    &lt;/&gt;
+  );
+}
+
+export default Start;

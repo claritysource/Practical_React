@@ -1,0 +1,93 @@
+import React from 'react'
+import Modal from './Modal'
+
+const Solution = () =&gt; {
+  const [modalVisible, setModalVisible] = React.useState(false)
+  const [modalText, setModalText] = React.useState('')
+
+  const inputRef = React.useRef()
+  const backdropRef = React.useRef()
+
+  const buttonStyle = {
+    fontSize: '1.5em',
+    backgroundColor: 'sky-blue',
+    color: 'blue',
+    cursor: 'pointer',
+  };
+
+  React.useEffect(() =&gt; {
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [modalVisible])
+
+  React.useEffect(() =&gt; {
+    const callback = e =&gt; {
+      if (backdropRef.current && backdropRef.current === e.target) {
+        hideModal()
+      }
+    }
+
+    window.addEventListener('click', callback)
+
+    return () =&gt; window.removeEventListener('click', callback)
+  }, [])
+  
+  const showModal = () =&gt; {
+    setModalVisible(true)
+    setModalText('')
+  }
+
+  const hideModal = () =&gt; {
+    setModalVisible(false)
+  }
+
+  const handleKeyPress = e =&gt; {
+    if (e.charCode === 13) {
+      hideModal()
+    }
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;button
+        className='btn btn-primary'
+        onClick={showModal}
+      &gt;
+        Show Modal
+      &lt;/button&gt;
+
+      {
+        modalVisible && 
+          &lt;Modal
+            title='A Modal'
+            ref={backdropRef}
+          &gt;
+            &lt;div&gt;
+              &lt;label htmlFor='input'&gt;Type Something:&nbsp;&nbsp;&lt;/label&gt;
+              &lt;input
+                className='modal-input'
+                id='input'
+                ref={inputRef}
+                onChange={e =&gt; setModalText(e.target.value)}
+                onKeyPress={e =&gt; handleKeyPress(e)}
+              /&gt;
+
+              &lt;div&gt;
+                &lt;button
+                  className='btn btn-primary modal-button'
+                  onClick={hideModal}&gt;
+                  Hide
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/Modal&gt;
+      }
+      {
+       modalVisible ? '' : &lt;div&gt;{modalText}&lt;/div&gt;
+      }
+    &lt;/div&gt;
+  );
+}
+
+export default Solution;

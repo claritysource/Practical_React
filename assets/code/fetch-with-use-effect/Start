@@ -1,0 +1,24 @@
+import React from 'react';
+import './App.css';
+
+const App = () =&gt; {
+  const URL = 'https://www.googleapis.com/books/v1/volumes?q=';
+
+  return (
+    &lt;div&gt;
+      &lt;form&gt;
+        &lt;label htmlFor='query-input'&gt;Search For &lt;/label&gt;
+        &lt;input
+          id='query-input'
+          type='text'
+        /&gt;
+      &lt;/form&gt;
+
+      &lt;div style={{marginTop: '20px'}}&gt;
+        Show the list of books here
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default App;

@@ -1,0 +1,153 @@
+<html xmlns='http://www.w3.org/1999/xhtml' xmlns:dk='http://www.kirsanov.com'>
+  <head>
+    <title>Counter</title>  
+    <meta http-equiv='content-type' content='text/html; charset=UTF-8'/>  
+    <link rel='stylesheet' type='text/css' href='./css/book.css'/>  
+  </head>  
+  <body style='counter-reset: h1 2'> 
+    <h1 class='basic'>Counter</h1> 
+      <p>This exercise involves...</p>
+
+    <h2>Rationale</h2>
+      <p></p>
+
+    <h2>Expectations</h2>
+      <p></p>
+
+    <h2>Level of Difficulty</h2>
+      <p>1 out of 10</p>
+
+    <h2 id='concepts'>Concepts</h2> 
+      <p></p>
+    <h2 id='exercise-description'>The Exercise Description</h2> 
+      <p></p>
+    <p>The starting point for the Extract Component exercise is shown in the following figure.</p>
+    <img src="./images/start-1.png" width="921" height="775"/>
+      
+      <pre id='sec1-1'>
+</pre>
+
+<p></p>
+      <img src="./images/start-2.png" width="921" height="775"/>
+      <p>The code for the starting point is shown in the following listing</p>
+      <pre id='sec1-1'>
+1 import React, { useState } from "react"
+2 import "./App.css"
+3 
+4 const Button = ({
+5   style,
+6   ...props
+7 }) =&gt; (
+8   &lt;button
+9     style={{
+10       border: "none",
+11       padding: "16px",
+12       borderRadius: "4px",
+13       background: "lightblue",
+14       margin: "5px",
+15       ...style,
+16     }}
+17     {...props}
+18   /&gt;
+19 )
+20 
+21 const Counter = () =&gt; {
+22   const [count, setCount] = useState(0)
+23 
+24   return (
+25     &lt;Button
+26       onClick={() =&gt; setCount(prev =&gt; prev + 1)}
+27     &gt;
+28       {count}
+29     &lt;/Button&gt;
+30   )
+31 };
+32 
+33 const Start = () =&gt; {
+34   return (
+35     &lt;div&gt;
+36       &lt;Counter /&gt;
+37     &lt;/div&gt;
+38   )
+39 }
+40 
+41 export default Start
+      </pre>
+
+    <h2 id='start'>The Solution</h2> 
+      <img src="./images/solution.png" width="921" height="775"/>
+      <p>The code for the solution is shown in the following listing</p>
+      <pre id='sec1-1'>
+1 import React, { useState } from "react"
+2 import "./App.css"
+3 
+4 const Button = ({
+5   style,
+6   ...props
+7 }) =&gt; (
+8   &lt;button
+9     style={{
+10       border: "none",
+11       padding: "16px",
+12       borderRadius: "4px",
+13       background: "lightblue",
+14       margin: "5px",
+15       ...style,
+16     }}
+17     {...props}
+18   /&gt;
+19 )
+20 
+21 const Counter = ({
+22   twoButtons = false
+23 }) =&gt; {
+24   const [count, setCount] = useState(0)
+25 
+26   const increment = () =&gt; setCount(prev =&gt; prev + 1)
+27   const decrement = () =&gt; setCount(prev =&gt; prev - 1)
+28 
+29   return twoButtons ?
+30     &lt;div&gt;
+31       &lt;Button
+32         style={{ backgroundColor: "red" }}
+33         onClick={increment}
+34       &gt;
+35         increase
+36       &lt;/Button&gt;
+37 
+38       &lt;Button
+39          style={{ backgroundColor: "purple" }}
+40          onClick={decrement}
+41        &gt;
+42         decrease
+43       &lt;/Button&gt;
+44 
+45       {count}
+46     &lt;/div&gt;
+47   :
+48     &lt;Button
+49       onClick={() =&gt; setCount(prev =&gt; prev + 1)}&gt;
+50         {count}
+51       &lt;/Button&gt;
+52 }
+53 
+54 const Solution = () =&gt; {
+55   return (
+56     &lt;div&gt;
+57       &lt;Counter /&gt;
+58       &lt;Counter twoButtons={true} /&gt;
+59     &lt;/div&gt;
+60   )
+61 }
+62 
+63 export default Solution
+      </pre>
+    <p></p>
+  </body> 
+</html>
+
+<p></p>
+
+<h1>Conclusion</h1>
+
+<p></p>

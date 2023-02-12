@@ -1,0 +1,201 @@
+<html xmlns='http://www.w3.org/1999/xhtml' xmlns:dk='http://www.kirsanov.com'>
+  <head>
+    <title>Number Input</title>  
+    <meta http-equiv='content-type' content='text/html; charset=UTF-8'/>  
+    <link rel='stylesheet' type='text/css' href='./css/book.css'/>  
+  </head>  
+  <body style='counter-reset: h1 2'> 
+    <h1 class='basic'>Number Input</h1> 
+      <p>This exercise involves...</p>
+
+    <h2>Rationale</h2>
+      <p></p>
+
+    <h2>Expectations</h2>
+      <p></p>
+
+    <h2>Level of Difficulty</h2>
+      <p>5 out of 10</p>
+
+    <h2 id='concepts'>Concepts</h2> 
+      <p></p>
+    <h2 id='exercise-description'>The Exercise Description</h2> 
+      <p></p>
+    <p>The starting point for the Number Input exercise is shown in the following figure.</p>
+    <img src="./images/start.png" width="921" height="774"/>
+      
+      <pre id='sec1-1'>
+1  import React from 'react'
+2  import './Start.css'
+3  
+4  const NumberInput = () =&gt; {
+5    return (
+6      &lt;div&gt;
+7        Implement a Number Input component here
+8      &lt;/div&gt;
+9    )
+10 }
+11 
+12 const Start = () =&gt; {
+13   return (
+14     &lt;&gt;
+15       &lt;div className='prompt'&gt;
+16         Enter a number between 1 and 99
+17       &lt;/div&gt;
+18 
+19       &lt;NumberInput /&gt;
+20     &lt;/&gt;
+21   )
+22 }
+23 
+24 export default Start
+</pre>
+
+<p></p>
+
+    <h2 id='start'>The Solution</h2> 
+      <img src="./images/solution-1.png" width="921" height="774"/>
+      <p>...</p>
+
+      <img src="./images/solution-2.png" width="921" height="774"/>
+      <p>...</p>
+      <pre id='sec1-1'>
+1  import React, { useEffect, useRef, useState } from 'react'
+2  import './Solution.css'
+3  
+4  const NumberInput = React.forwardRef(({
+5    min=0,
+6    max=99,
+7    disabled,
+8    value,
+9    setValue,
+10   setShowError,
+11   style={},
+12 }, ref) =&gt; {
+13   // Constants.................................................................
+14 
+15   const [previousValue, setPreviousValue] = useState('')
+16 
+17   // Constants..................................................................
+18 
+19   const isDigitKey     = e =&gt; e.keyCode &gt;= 48 && e.keyCode &lt;= 57
+20   const isArrowKey     = e =&gt; e.keyCode === 37 || e.keyCode === 39
+21   const isBackspaceKey = e =&gt; e.keyCode === 8
+22   const isDeleteKey    = e =&gt; e.keyCode === 46
+23   const isTabKey       = e =&gt; e.keyCode === 9
+24   const isShiftKey     = e =&gt; e.keyCode === 16
+25   const isCapsLock     = e =&gt; e.keyCode === 20
+26 
+27   const isNumber = e =&gt; !isNaN(parseInt(e.target.value))
+28 
+29   const handleChange = e =&gt; {
+30     const intValue = parseInt(e.target.value)
+31 
+32     if (!isNumber(e) || (intValue &lt; min || intValue &gt; max)) {
+33       if (e.target.value !== '') {
+34         setShowError(true)
+35         e.target.value = previousValue.toString()
+36       }
+37       else {
+38         setValue(e.target.value)
+39       }
+40     }
+41     else {
+42       if (e.target.value !== 'e') {
+43         setValue(e.target.value)
+44         setPreviousValue(intValue)
+45       }
+46 
+47       setShowError(false)
+48     }
+49   }
+50 
+51   const handleKeyDown = e =&gt; {
+52     if (!isDigitKey(e)     &&
+53         !isBackspaceKey(e) &&
+54         !isArrowKey(e)     &&
+55         !isTabKey(e)       &&
+56         !isShiftKey(e)     &&
+57         !isDeleteKey(e)    &&
+58         !isCapsLock(e)
+59     ) {
+60       e.preventDefault()
+61       setShowError(true)
+62     }
+63     else {
+64       setShowError(false)
+65     }
+66   }
+67 
+68   const calculateDisplayValue = () =&gt;
+69     isNaN(value) || value === null ? '' : (value !== 'e' ? value : '')
+70 
+71   // Markup.....................................................................
+72 
+73   return (
+74     &lt;input
+75       ref={ref}
+76       type="input"
+77       value={calculateDisplayValue()}
+78       onChange={handleChange}
+79       onKeyDown={handleKeyDown}
+80       disabled={disabled}
+81       style={style}
+82     /&gt;
+83   )
+84 })
+85 
+86 const Solution = () =&gt; {
+87   const [showError, setShowError] = useState(false)
+88   const [value, setValue] = useState('')
+89   const inputRef = useRef()
+90 
+91   useEffect(() =&gt; {
+92     if (inputRef.current) {
+93       inputRef.current.focus()
+94     }
+95   }, [])
+96 
+97   return (
+98     &lt;&gt;
+99       &lt;div className='prompt'&gt;
+100         Enter a number between 1 and 99
+101       &lt;/div&gt;
+102 
+103       {showError &&
+104         &lt;div className='error'&gt;
+105           Enter a number between one and 99
+106         &lt;/div&gt;
+107       }
+108 
+109       &lt;NumberInput
+110         ref={inputRef}
+111         value={value}
+112         setValue={setValue}
+113         setShowError={setShowError}
+114         style={{
+115           width: '2em',
+116           fontSize: '1.1em',
+117         }}
+118       /&gt;
+119 
+120       {value &&
+121         &lt;div className='value'&gt;
+122           Value: {value}
+123         &lt;/div&gt;
+124       }
+125     &lt;/&gt;
+126   )
+127 }
+128 
+129 export default Solution
+      </pre>
+    <p></p>
+  </body> 
+</html>
+
+<p></p>
+
+<h1>Conclusion</h1>
+
+<p></p>

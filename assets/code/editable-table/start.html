@@ -1,0 +1,42 @@
+import React, {useState} from 'react'
+import './App.css'
+
+const Start = () =&gt; {
+  const [selectedUser, setSelectedUser] = useState(1)
+
+  const users = [
+    { id: 1, name: 'Alice' },
+    { id: 2, name: 'Bill' },
+    { id: 3, name: 'Courtney' },
+    { id: 4, name: 'Daniel' },
+    { id: 5, name: 'Edward' },
+    { id: 6, name: 'Francis' },
+  ]
+
+  const handleOnChange = e =&gt; setSelectedUser(e.target.value)
+
+  return (
+    &lt;div&gt;
+      &lt;div style={{marginBottom: '2em'}}&gt;Selected User: {selectedUser}&lt;/div&gt;
+    
+      &lt;label style={{marginRight: '1em'}}&gt;Users&lt;/label&gt;
+      &lt;select
+        className="custom-select"
+        style={{width: '10em'}}
+        value={selectedUser}
+        onChange={handleOnChange}
+      &gt;
+        {users.map((user) =&gt;
+          &lt;option
+            key={user.id}
+            value={user.id}
+          &gt;
+            {user.name}
+          &lt;/option&gt;
+        )}
+      &lt;/select&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default Start;

@@ -1,0 +1,18 @@
+1  import React from 'react'
+2  import './Pagination.css'
+3  
+4  const NextLink = ({
+5    pageNumber,
+6    numPages,
+7    updatePage
+8  }) =&gt; {
+9    return (
+10     &lt;div
+11       className='next btn-link pointer'
+12       onClick={() =&gt; updatePage(pageNumber + 1)}&gt;
+13       { pageNumber &lt; numPages ? 'Next' : '' }
+14     &lt;/div&gt;
+15   )
+16 }
+17 
+18 export default NextLink

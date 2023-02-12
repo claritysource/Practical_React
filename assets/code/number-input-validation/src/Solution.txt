@@ -1,0 +1,129 @@
+import React, { useEffect, useRef, useState } from 'react'
+import './Solution.css'
+
+const NumberInput = React.forwardRef(({
+  min=0,
+  max=99,
+  disabled,
+  value,
+  setValue,
+  setShowError,
+  style={},
+}, ref) =&gt; {
+  // Constants.................................................................
+
+  const [previousValue, setPreviousValue] = useState('')
+
+  // Constants..................................................................
+
+  const isDigitKey     = e =&gt; e.keyCode &gt;= 48 && e.keyCode &lt;= 57
+  const isArrowKey     = e =&gt; e.keyCode === 37 || e.keyCode === 39
+  const isBackspaceKey = e =&gt; e.keyCode === 8
+  const isDeleteKey    = e =&gt; e.keyCode === 46
+  const isTabKey       = e =&gt; e.keyCode === 9
+  const isShiftKey     = e =&gt; e.keyCode === 16
+  const isCapsLock     = e =&gt; e.keyCode === 20
+
+  const isNumber = e =&gt; !isNaN(parseInt(e.target.value))
+
+  const handleChange = e =&gt; {
+    const intValue = parseInt(e.target.value)
+
+    if (!isNumber(e) || (intValue &lt; min || intValue &gt; max)) {
+      if (e.target.value !== '') {
+        setShowError(true)
+        e.target.value = previousValue.toString()
+      }
+      else {
+        setValue(e.target.value)
+      }
+    }
+    else {
+      if (e.target.value !== 'e') {
+        setValue(e.target.value)
+        setPreviousValue(intValue)
+      }
+
+      setShowError(false)
+    }
+  }
+
+  const handleKeyDown = e =&gt; {
+    if (!isDigitKey(e)     &&
+        !isBackspaceKey(e) &&
+        !isArrowKey(e)     &&
+        !isTabKey(e)       &&
+        !isShiftKey(e)     &&
+        !isDeleteKey(e)    &&
+        !isCapsLock(e)
+    ) {
+      e.preventDefault()
+      setShowError(true)
+    }
+    else {
+      setShowError(false)
+    }
+  }
+
+  const calculateDisplayValue = () =&gt;
+    isNaN(value) || value === null ? '' : (value !== 'e' ? value : '')
+
+  // Markup.....................................................................
+
+  return (
+    &lt;input
+      ref={ref}
+      type="input"
+      value={calculateDisplayValue()}
+      onChange={handleChange}
+      onKeyDown={handleKeyDown}
+      disabled={disabled}
+      style={style}
+    /&gt;
+  )
+})
+
+const Solution = () =&gt; {
+  const [showError, setShowError] = useState(false)
+  const [value, setValue] = useState('')
+  const inputRef = useRef()
+
+  useEffect(() =&gt; {
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [])
+
+  return (
+    &lt;&gt;
+      &lt;div className='prompt'&gt;
+        Enter a number between 1 and 99
+      &lt;/div&gt;
+
+      {showError &&
+        &lt;div className='error'&gt;
+          Enter a number between one and 99
+        &lt;/div&gt;
+      }
+
+      &lt;NumberInput
+        ref={inputRef}
+        value={value}
+        setValue={setValue}
+        setShowError={setShowError}
+        style={{
+          width: '2em',
+          fontSize: '1.1em',
+        }}
+      /&gt;
+
+      {value &&
+        &lt;div className='value'&gt;
+          Value: {value}
+        &lt;/div&gt;
+      }
+    &lt;/&gt;
+  )
+}
+
+export default Solution

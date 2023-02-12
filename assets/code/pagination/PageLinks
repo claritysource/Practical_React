@@ -1,0 +1,51 @@
+import React from 'react'
+import './Pagination.css'
+
+const PageLinks = ({pageNumber, numPages, updatePage}) =&gt; {
+  const numLinks = getNumLinks()
+  const possibleStart = Math.floor(pageNumber - numLinks/2)
+  const start = possibleStart &gt; 0 ? possibleStart &gt; numPages + 1 - numLinks ?
+                numPages - numLinks + 1 : possibleStart : 1
+
+  return createLinks(start)
+
+  // Functions..................................................................
+
+  function getNumLinks() {
+    let result;
+
+    if (numPages &lt; 3) {
+      return 0
+    }
+    else {
+      for (let i=1; i &lt;= 10; ++i) {
+        if (i &lt; numPages) {
+          result = i
+        }
+      }
+
+      return result
+    }
+  }
+
+  function createLinks(start) {
+    const links = []
+
+    for (let i=0; i &lt; numLinks; ++i) {
+      start + i &lt;= numPages &&
+      links.push(&lt;div
+        key={start + i}
+        onClick={() =&gt; updatePage(start + i)}
+        className={start + i === pageNumber ?
+                    "page-links" :
+                    "page-links btn-link pointer"}
+      &gt;
+        {start + i}
+      &lt;/div&gt;)
+    }
+
+    return links
+  }
+}
+
+export default PageLinks

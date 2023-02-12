@@ -1,0 +1,434 @@
+/*
+
+Book structure:
+
+Sections with h1/h2/h3. No section divs for now
+
+Bulleted, numbered lists
+
+LowerAlpha style for lettered lists
+
+Character styles:
+
+em, strong, code, var, q
+
+var: Roman italic 
+cite: Comment inside code, in Roman 
+abbr: Grayed out
+samp: Handwritten
+
+Note types:
+
+Note
+Caution
+Tip
+
+All are divs <div class="NoteType">
+
+Notes are not numbered.
+
+Figures:
+
+    <div class="figure"><img alt="???"
+    src="images/..."/><div>Caption in Second Div</div></div>
+
+
+Tables:
+
+Use caption element
+
+
+For references, manually write 
+
+<a href="#..." class="tableref">This</a>
+see <a href="#..." class="h2ref">this</a>
+
+because we can't tell the correct capitalization. 
+
+Todo: Maybe this should be Tableref vs. tableref
+
+*/
+
+@font-face {
+  font-family: "DejaVu Sans Mono Condensed";
+  src: local("DejaVu Sans Mono Condensed"), url("DejaVuSansMonoCondensed.otf") format("opentype");
+}
+
+pre, code { 
+  font-family: "DejaVu Sans Mono Condensed", monospace, Courier
+}
+
+body { 
+  font-family: "Times New Roman", serif
+}
+
+kbd { 
+  font-family: "Times New Roman", serif;
+  font-variant: small-caps;
+  text-transform: lowercase; 
+  font-style: normal;
+}
+
+var {
+  font-style: italic;
+  font-family: "Times New Roman", serif
+}
+
+samp {
+  font-style: normal;
+  font-family: "SueEllenFrancisco", "MarkingPen", "Comic Sans MS", serif
+}
+
+pre cite, code cite {
+  font-style: normal;
+  font-family: "Times New Roman", serif
+}
+
+@media screen { 
+  pre cite, code cite {
+    border: solid thin pink;
+  }
+}
+
+pre abbr { 
+  color: gray;
+}
+
+
+pre { 
+  margin: 1em;
+}
+
+div.Note > p:first-child:before, p.Note:before {    
+  content: "Note: ";
+  font-weight: bold;
+}
+
+.Note, .Tip, .Caution, .Difficult { 
+  background-repeat: no-repeat; 
+  padding-left: 70px;
+  min-height: 50px;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+}
+
+.Construction {
+  background-repeat: no-repeat; 
+  padding-left: 90px;
+  min-height: 150px;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  background-image: url("construction.jpg");
+}
+
+.Construction:before {
+  content: "Under Construction: ";
+} 
+
+.Note {
+  background-image: url("text-editor.png");
+  background-color: #ffffcc;
+}
+
+.Tip { 
+  background-image: url("information.png");
+  background-color: #b4e2d8;
+}
+
+.Caution {
+  background-image: url("weather-severe-alert.png");
+  background-color: #fed0d3;
+}
+
+.Do:before {
+  content: "Do: ";
+  font-weight: bold;
+}
+
+.Do { 
+  background-image: url("do.gif");
+  background-repeat: no-repeat; 
+  padding-left: 75px;
+  min-height: 70px;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.Observe:before {
+  content: "Observe: ";
+  font-weight: bold;
+}
+
+.Observe { 
+  background-image: url("observe.gif");
+  background-repeat: no-repeat; 
+  padding-left: 75px;
+  min-height: 70px;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+
+div.Tip > p:first-child:before, p.Tip:before {
+  content: "Tip: ";
+  font-weight: bold;
+}
+
+div.Caution > p:first-child:before, p.Caution:before { 
+  content: "Caution: ";
+  font-weight: bold;
+}
+
+.Blecch,
+.GlassFishNote,
+.YourTurn,
+.Bug,
+.UnderTheHood
+{
+  border: solid thin green;
+  padding-left: 100px;
+  text-indent: -100px;
+}
+
+
+.Blecch:before,
+.GlassFishNote:before,
+.YourTurn:before,
+.Bug:before,
+.UnderTheHood:before
+{    
+  font-weight: bold;
+  background-color: lightgray;
+}
+
+
+.Blecch:before 
+{    
+  content: url("disgust.jpg") " Blecch: ";
+}
+
+.GlassFishNote:before 
+{    
+  content: url("glassfish_logo.gif") " GlassFish Note: ";
+}
+
+.YourTurn:before
+{
+  content: url("yourturn.gif") " It's Your Turn: ";
+}
+
+.Bug:before
+{
+  content: url("bug.jpg") " Bug: ";
+}
+
+.UnderTheHood:before
+{
+  content: url("underhood.gif") " Under The Hood: ";
+}
+
+.dbheader {
+  background-color: lavender;
+  align: center;
+}
+
+.dbhighlight {
+  background-color: thistle;
+}
+
+.tableName { 
+  background-color: yellow;
+}
+
+table {
+  border-collapse: collapse;
+  border-style: solid;
+  border-width: thin;
+  margin-left: 2em;
+  margin-right: 2em;  
+  margin-bottom: 1em;
+}
+
+table caption { 
+  margin-top: 1em;
+  margin-left: 2em;
+  margin-right: 2em;  
+  margin-bottom: 0.5em;
+}
+
+table td {
+  border-style: solid;
+  border-width: thin;
+  padding: 3pt;
+}
+
+table th {
+  border-style: solid;
+  border-width: thin;
+  padding: 3pt;
+}
+
+.TBD:before { 
+  color: red;
+  content: "TBD: " ;
+}
+
+.TBD { 
+  color: red;
+}
+
+table caption:before { 
+  content: "Table " counter(table) ": ";
+}
+
+table[id] { 
+  counter-increment: table;
+}
+
+@media screen { 
+  table caption { 
+    background-color: lightgray;
+  }
+}
+
+@media print { 
+  table caption { 
+    text-align: left;
+  }
+}
+
+body { 
+  counter-reset: table;
+}
+
+@media print { 
+  a.tableref { 
+    content: "Table " target-counter(attr(href), table) ;
+    text-decoration: none;
+    color: black;
+  }
+
+  a.figureref { 
+    content: "Figure " target-counter(attr(href), figure) ;
+    text-decoration: none;
+    color: black;
+  }
+
+  a.h2ref { 
+    content: "Section " target-counter(attr(href), h2);
+    text-decoration: none;
+    color: black;
+  }
+
+  a.h3ref { 
+    content: "Section " target-counter(attr(href), h2) "." target-counter(attr(href), h3);
+    text-decoration: none;
+    color: black;
+  }
+}
+
+.chapterRef:before { 
+  content: "the “";
+  font-variant: normal;
+}
+
+.chapterRef:after { 
+  content: "” chapter";
+  font-variant: normal;
+}
+
+@media screen { 
+  a.tableref:after { 
+    font-variant: small-caps;
+    content: "this table"
+  }
+
+  a.figureref:after { 
+    font-variant: small-caps;
+    content: "this figure"
+  }
+
+  a.h2ref:after { 
+    font-variant: small-caps;
+    content: "this section"
+  }
+
+  a.h3ref:after { 
+    font-variant: small-caps;
+    content: "this section"
+  }
+}
+
+body {
+  counter-reset: h2;      /* Set section to 0 */
+}
+
+h2:before {
+  content: counter(h2) " ";
+}
+
+h2 { 
+  counter-increment: h2;
+  counter-reset: h3;
+}
+
+h3:before { 
+  content: counter(h2) "." counter(h3) " ";
+}
+
+h3 { 
+  counter-increment: h3;
+  counter-reset: h4;
+}
+
+div.figure { 
+  counter-increment: figure;
+  padding: 2em;
+}
+
+div.figure div:before { /* the caption */
+  content: "Figure " counter(figure) ": ";
+}
+
+.Q {
+  background-image: url("q.gif");
+  background-repeat: no-repeat; 
+  padding-left: 60px;
+  min-height: 75px;
+  background-color: #cfe9b9;
+  margin-bottom: 0;
+  padding-bottom: 0.25ex
+}
+
+div.Q > p:first-child:before, p.Q:before  { 
+  content: "Q: ";
+  font-weight: bold;
+}
+
+.A {
+  background-image: url("a.gif");
+  background-repeat: no-repeat; 
+  padding-left: 60px;
+  min-height: 75px;
+  background-color: #cfe9b9;
+  margin-top: 0;
+  padding-top: 0.25ex
+}
+
+div.A > p:first-child:before, p.A:before  { 
+  content: "A: ";
+  font-weight: bold;
+}
+
+.Difficult {
+  background-image: url("slippery_roadsign.png");
+  padding-left: 50px;  
+}
+
+.lower-alpha > li { 
+  list-style-type: lower-alpha;
+}

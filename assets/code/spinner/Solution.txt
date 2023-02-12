@@ -1,0 +1,27 @@
+1  import React, { useEffect, useState } from 'react';
+2  import SpinnerWithBackdrop from './SpinnerWithBackdrop'
+3  
+4  const Solution = () =&gt; {
+5    const [busy, setBusy] = useState(false)
+6  
+7    useEffect(() =&gt; {
+8      if (busy) {
+9        setTimeout(() =&gt; {
+10         setBusy(false)
+11       }, 2000)
+12     }
+13   }, [busy, setBusy])
+14 
+15   return (
+16     &lt;SpinnerWithBackdrop condition={busy}&gt;
+17       &lt;div&gt;
+18         &lt;button
+19           onClick={() =&gt; setBusy(true)}&gt;
+20             Show Spinner for two seconds
+21         &lt;/button&gt;
+22       &lt;/div&gt;
+23     &lt;/SpinnerWithBackdrop&gt;
+24   )
+25 }
+26 
+27 export default Solution;

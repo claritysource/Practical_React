@@ -1,0 +1,75 @@
+1  import React, {useRef, useState, useEffect} from 'react';
+2  import './App.css';
+3  
+4  const Solution = React.memo(() =&gt; {
+5    const URL = 'https://www.googleapis.com/books/v1/volumes?q='
+6    const inputRef = useRef();
+7    const [query, setQuery] = useState('')
+8    const [url, setUrl] = useState('')
+9    const [items, setItems] = useState([])
+10   const [loading, setLoading] = useState(false)
+11   const [error, setError] = useState('')
+12 
+13   useEffect(() =&gt; {
+14     if (inputRef.current) {
+15       inputRef.current.focus()
+16     }
+17   }, [])
+18 
+19   useEffect(() =&gt; {
+20     let mounted = true
+21 
+22     const fetchData = async () =&gt; {
+23       const response = await fetch(url)
+24       const json = await response.json()
+25 
+26       if (mounted && json) {
+27         if (!json.error) {
+28           setItems(json.items)
+29         }
+30         else {
+31           setError(json.error.message)
+32         }
+33 
+34         setLoading(false)
+35       }
+36     }
+37 
+38     if (mounted && url) {
+39       setLoading(true)
+40       fetchData()
+41     }
+42 
+43     return () =&gt; mounted = false
+44   }, [url])
+45 
+46   const submitForm = e =&gt; {
+47     e.preventDefault()
+48     setUrl(prevUrl =&gt; query ? `${URL}/${query}` : '')
+49   }
+50 
+51   return (
+52     &lt;div&gt;
+53       &lt;form onSubmit={submitForm}&gt;
+54         &lt;label htmlFor='query-input'&gt;Search For &lt;/label&gt;
+55         &lt;input
+56           ref={inputRef}
+57           type='text'
+58           onChange={e =&gt; setQuery(e.target.value)} id='query-input'
+59         /&gt;
+60       &lt;/form&gt;
+61 
+62       &lt;div style={{marginTop: '20px'}}&gt;
+63         {loading ? 'Loading...' :
+64          error ? (&lt;div&gt;{error}&lt;/div&gt;) :
+65          items &&
+66           items.map(item =&gt;
+67             &lt;div&gt;{item.volumeInfo.title}&lt;/div&gt;
+68           )
+69         }
+70       &lt;/div&gt;
+71     &lt;/div&gt;
+72   )
+73 })
+74 
+75 export default Solution;

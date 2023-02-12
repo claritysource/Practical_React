@@ -1,0 +1,28 @@
+import React from 'react';
+import './Instructions.css';
+
+const Instructions = () => {
+  return (
+    <>
+      <div className="Instructions">
+        <ul>
+          <li classname='heading'>Implement the MouseTracker component as a function component</li>
+          <ol>
+            <li>The MouseTracker component tracks mouse coordinates relative to the window</li>
+            <li>The output of the application should look like this</li>
+          </ol>
+        </ul>
+        <div style={{height: '200px'}}>
+          <ul style={{marginTop: '20px'}}>
+            <li>Mouse X</li>
+            <li>Mouse Y</li>
+          </ul>
+          <h3>(MouseX, MouseY)</h3>
+        </div>
+      </div>
+      <hr/>
+    </>
+  )
+}
+
+export default Instructions;

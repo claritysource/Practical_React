@@ -1,0 +1,21 @@
+.help-modal-okay-button {
+  min-width: 5em;
+  border-radius: 10px;
+  margin-top: 1em;
+}
+
+.help-modal-container {
+  display: flex;
+  justify-content: center;
+  min-width: 30em;
+  min-height: 10em;
+  max-height: 20em;
+  overflow: scroll;
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+.help-hr {
+  color: rgb(200, 231, 243);
+  margin-bottom: 1em;
+}

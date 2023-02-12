@@ -1,0 +1,15 @@
+.close-box {
+  position: fixed;
+  top: 2.6em;
+  right: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  font-size: 1.5em;
+  font-style: bold;
+}
+
+.close-box span {
+  cursor: pointer;
+  color: rgb(5, 118, 255);
+}

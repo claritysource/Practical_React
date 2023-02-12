@@ -1,0 +1,50 @@
+import React, { useEffect, useState } from 'react';
+import './App.css';
+
+const sleep = delay =&gt; new Promise(resolve =&gt; setTimeout(resolve, delay))
+
+const getDateFromServer = async () =&gt; {
+  await sleep(1000)
+
+  if (Math.random() &gt; 0.5) {
+    return {
+      date: new Date()
+    }
+  }
+  else {
+    return {
+      error: 'Server error'
+    }
+  }
+}
+
+const Solution = () =&gt; {
+  const [date, setDate] = useState(null)
+  const [error, setError] = useState(null)
+
+  useEffect(() =&gt; {
+    const getDate = async () =&gt; {
+      const serverDate = await getDateFromServer()
+
+      if (serverDate.error) {
+        setError(serverDate.error)
+      }
+      else {
+        setDate(serverDate.date.toString())
+      }
+    } 
+
+    if (date === null && error === null) {
+      getDate()
+    }
+  }, [date, error])
+
+  return (
+    date === null && error === null ? &lt;div&gt;Loading...&lt;/div&gt; :
+    &lt;div&gt;
+      {error ? error : date}
+    &lt;/div&gt;
+  )
+}
+
+export default Solution;

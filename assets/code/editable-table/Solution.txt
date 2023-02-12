@@ -1,0 +1,161 @@
+1  import React, { useState } from 'react';
+2  import { FaRegEdit, FaRegCheckCircle, FaRegTimesCircle } from 'react-icons/fa'
+3  
+4  const Solution = () =&gt; {
+5    const [tableData, setTableData] = useState([
+6      { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+7      { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+8      { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+9      { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+10     { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+11     { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+12     { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+13     { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+14   ])
+15 
+16   return (
+17     &lt;&gt;
+18       &lt;EditableTable
+19         tableData={tableData}
+20         setTableData={setTableData}
+21       /&gt;
+22 
+23       &lt;table&gt;
+24         Data:
+25         {
+26           tableData.map(row =&gt;
+27             &lt;tr&gt;
+28               &lt;td&gt;{row.firstName}&lt;/td&gt;
+29               &lt;td&gt;{row.lastName}&lt;/td&gt;
+30               &lt;td&gt;{row.age}&lt;/td&gt;
+31             &lt;/tr&gt;
+32           )
+33         }
+34       &lt;/table&gt;
+35     &lt;/&gt;
+36   )
+37 }
+38 
+39 const EditableTable = ({
+40   tableData,
+41   setTableData,
+42 }) =&gt; {
+43   const [tableDataCopy, setTableDataCopy] = useState([...tableData])
+44   const [rowsBeingEdited, setRowsBeingEdited] = useState([])
+45 
+46   const edit = index =&gt; {
+47     if (!rowsBeingEdited.includes(index)) {
+48       setRowsBeingEdited([
+49         ...rowsBeingEdited,
+50         index,
+51       ])
+52     }
+53   }
+54 
+55   const setProperty = (index, property, value) =&gt; {
+56     const newTableData = [...tableDataCopy]
+57 
+58     newTableData[index] = {
+59       ...newTableData[index],
+60       [property]: value,
+61     }
+62 
+63     setTableDataCopy(newTableData)
+64   }
+65 
+66   const stopEditing = index =&gt; {
+67     setRowsBeingEdited(rowsBeingEdited.filter(row =&gt; row !== index))
+68   }
+69 
+70   const cancelEdit = index =&gt; {
+71     stopEditing(index)
+72     tableDataCopy[index] = tableData[index]
+73   }
+74 
+75   const saveEdits = index =&gt; {
+76     stopEditing(index)
+77     setTableData(tableDataCopy)
+78   }
+79 
+80   return (
+81     &lt;div className='table-container'&gt;
+82       &lt;table className='table'&gt;
+83         &lt;thead&gt;
+84           &lt;tr&gt;
+85             &lt;th className='first-name-header'&gt;First Name&lt;/th&gt;
+86             &lt;th className='last-name-header'&gt;Last Name&lt;/th&gt;
+87             &lt;th className='age-header'&gt;Age&lt;/th&gt;
+88             &lt;th className='actions-header'&gt;Actions&lt;/th&gt;
+89           &lt;/tr&gt;
+90         &lt;/thead&gt;
+91 
+92         &lt;tbody&gt;
+93           {
+94             tableDataCopy.map((data, i) =&gt;
+95               &lt;tr
+96                 key={i}&gt;
+97                 {rowsBeingEdited.includes(i) ?
+98                   &lt;&gt;
+99                     &lt;td&gt;
+100                       &lt;input
+101                         className='first-name-input'
+102                         value={data.firstName}
+103                         onChange={e =&gt; setProperty(i, 'firstName', e.target.value)}
+104                       /&gt;
+105                     &lt;/td&gt;
+106                     &lt;td&gt;
+107                       &lt;input
+108                         className='last-name-input'
+109                         value={data.lastName}
+110                         onChange={e =&gt; setProperty(i, 'lastName', e.target.value)}
+111                       /&gt;
+112                     &lt;/td&gt;
+113                     &lt;td&gt;
+114                       &lt;input
+115                         className='age-input'
+116                         value={data.age}
+117                         onChange={e =&gt; setProperty(i, 'age', e.target.value)}
+118                       /&gt;
+119                     &lt;/td&gt;
+120                   &lt;/&gt;
+121                   :
+122                   &lt;&gt;
+123                     &lt;td&gt;{data.firstName}&lt;/td&gt;
+124                     &lt;td&gt;{data.lastName}&lt;/td&gt;
+125                     &lt;td&gt;{data.age}&lt;/td&gt;
+126                   &lt;/&gt;
+127                 }
+128                 &lt;td&gt;
+129                   &lt;div className='actions'&gt;
+130                     {rowsBeingEdited.includes(i) ?
+131                       &lt;&gt;
+132                         &lt;td className='edit-icon'&gt;
+133                           &lt;FaRegCheckCircle
+134                             onClick={e =&gt; saveEdits(i)}
+135                           /&gt;
+136                         &lt;/td&gt;
+137                         &lt;td className='edit-icon'&gt;
+138                           &lt;FaRegTimesCircle
+139                             onClick={() =&gt; cancelEdit(i)}
+140                           /&gt;
+141                         &lt;/td&gt;
+142                       &lt;/&gt;
+143                       :
+144                       &lt;td className='edit-icon'&gt;
+145                         &lt;FaRegEdit
+146                           onClick={() =&gt; edit(i)}
+147                         /&gt;
+148                       &lt;/td&gt;
+149                     }
+150                   &lt;/div&gt;
+151                 &lt;/td&gt;
+152               &lt;/tr&gt;
+153             )
+154           }
+155         &lt;/tbody&gt;
+156       &lt;/table&gt;
+157     &lt;/div&gt;
+158   )
+159 }
+160 
+161 export default Solution;

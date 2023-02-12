@@ -1,0 +1,86 @@
+import React, {useRef, useState, useEffect} from 'react';
+import './App.css';
+
+const useFetch = (url, setDebounced) =&gt; {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [items, setItems] = useState([])
+
+  useEffect(() =&gt; {
+    const fetchItems = async () =&gt; {
+      const response = await fetch(url)
+      const data = await response.json()
+
+      if (!data.error) {
+        setItems(data.items)
+      }
+      else {
+        setError(data.error)
+      }
+
+      setLoading(false)
+      setDebounced(false)
+    }
+
+    if (url) {
+      setLoading(true)
+      fetchItems()
+    }
+  }, [url, setDebounced])
+
+  return [loading, items, error]
+}
+
+const useDebounce = (value, debounceDelay) =&gt; {
+  const [debounced, setDebounced] = useState(false)
+
+  useEffect(() =&gt; {
+    setDebounced(false)
+
+    if (value) {
+      const timeout = setTimeout(() =&gt; {
+        setDebounced(true)
+      }, debounceDelay)
+
+      return () =&gt; clearTimeout(timeout)
+    }
+  }, [value, debounceDelay])
+
+  return [debounced, setDebounced];
+}
+
+const Solution = React.memo(() =&gt; {
+  const URL = 'https://www.googleapis.com/books/v1/volumes?q='
+  const inputRef = useRef();
+
+  const [query, setQuery] = useState('')
+  const [debounced, setDebounced] = useDebounce(query, 1000)
+  const [loading, items, error] = useFetch(debounced ? `${URL}/${query}` : '', setDebounced)
+
+  useEffect(() =&gt; {
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [])
+
+  return (
+    &lt;div&gt;
+      &lt;label htmlFor='query-input'&gt;Search For &lt;/label&gt;
+      &lt;input ref={inputRef} type='text' onChange={e =&gt; setQuery(e.target.value)} id='query-input' /&gt;
+
+      &lt;div style={{marginTop: '20px'}}&gt;
+        { loading ? &lt;div&gt;Loading...&lt;/div&gt; :
+          error   ? &lt;div&gt;{error.message}&lt;/div&gt; :
+          items   ?
+          &lt;div&gt;
+            {items.map(i =&gt; 
+              &lt;div key={i.id}&gt;{i.volumeInfo.title}&lt;/div&gt;
+            )}
+          &lt;/div&gt; : null
+      }
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+})
+
+export default Solution;

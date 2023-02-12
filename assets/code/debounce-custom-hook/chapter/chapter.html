@@ -1,0 +1,202 @@
+<html xmlns='http://www.w3.org/1999/xhtml' xmlns:dk='http://www.kirsanov.com'>
+  <head>
+    <title>Counter</title>  
+    <meta http-equiv='content-type' content='text/html; charset=UTF-8'/>  
+    <link rel='stylesheet' type='text/css' href='./css/book.css'/>  
+  </head>  
+  <body style='counter-reset: h1 2'> 
+    <h1 class='basic'>Debounce Custom Hook</h1> 
+      <p>This exercise involves...</p>
+
+    <h2>Rationale</h2>
+      <p></p>
+
+    <h2>Expectations</h2>
+      <p></p>
+
+    <h2>Level of Difficulty</h2>
+      <p>1 out of 10</p>
+
+    <h2 id='concepts'>Concepts</h2> 
+      <p></p>
+    <h2 id='exercise-description'>The Exercise Description</h2> 
+      <p></p>
+    <p>The starting point for the Extract Component exercise is shown in the following figure.</p>
+    <img src="./images/start.png" width="971" height="874"/>
+      
+      <pre id='sec1-1'>
+1  import React, {useRef, useState, useEffect} from 'react';
+2  import './App.css';
+3  
+4  const useFetch = (url) =&gt; {
+5    const [loading, setLoading] = useState(false)
+6    const [error, setError] = useState('')
+7    const [items, setItems] = useState([])
+8  
+9    useEffect(() =&gt; {
+10     const fetchItems = async () =&gt; {
+11       const response = await fetch(url)
+12       const data = await response.json()
+13 
+14       if (!data.error) {
+15         setItems(data.items)
+16       }
+17       else {
+18         setError(data.error)
+19       }
+20 
+21       setLoading(false)
+22     }
+23 
+24     if (url) {
+25       setLoading(true)
+26       fetchItems()
+27     }
+28     else {
+29       setItems(null)
+30     }
+31   }, [url])
+32 
+33   return [loading, items, error]
+34 }
+35 
+36 const Start = React.memo(() =&gt; {
+37   const URL = 'https://www.googleapis.com/books/v1/volumes?q='
+38   const inputRef = useRef();
+39 
+40   const [query, setQuery] = useState('')
+41   const [loading, items, error] = useFetch(query ? `${URL} + '/' + ${query}` : '')
+42 
+43   useEffect(() =&gt; {
+44     if (inputRef.current) {
+45       inputRef.current.focus()
+46     }
+47   }, [])
+48 
+49   return (
+50     &lt;div&gt;
+51       &lt;label htmlFor='query-input'&gt;Search For &lt;/label&gt;
+52       &lt;input ref={inputRef} type='text' onChange={e =&gt; setQuery(e.target.value)} id='query-input' /&gt;
+53 
+54       &lt;div style={{marginTop: '20px'}}&gt;
+55         { loading ? &lt;div&gt;Loading...&lt;/div&gt; :
+56           error   ? &lt;div&gt;{error.message}&lt;/div&gt; :
+57           items   ?
+58           &lt;div&gt;
+59             {items.map(i =&gt; 
+60               &lt;div key={i.id}&gt;{i.volumeInfo.title}&lt;/div&gt;
+61             )}
+62           &lt;/div&gt; : null
+63       }
+64       &lt;/div&gt;
+65     &lt;/div&gt;
+66   )
+67 })
+68 
+69 export default Start;
+</pre>
+
+<p></p>
+
+    <h2 id='start'>The Solution</h2> 
+      <img src="./images/solution-1.png" width="971" height="874"/>
+      <img src="./images/solution-2.png" width="971" height="874"/>
+      <img src="./images/solution-3.png" width="971" height="874"/>
+      <p>The <code>Solution</code> component for this coding exercise is shown in the following listing.</p>
+      <pre id='sec1-1'>
+1  import React, {useRef, useState, useEffect} from 'react'
+2  import './App.css'
+3  
+4  const useFetch = (url, setDebounced) =&gt; {
+5    const [loading, setLoading] = useState(false)
+6    const [error, setError] = useState('')
+7    const [items, setItems] = useState([])
+8  
+9    useEffect(() =&gt; {
+10     const fetchItems = async () =&gt; {
+11       const response = await fetch(url)
+12       const data = await response.json()
+13 
+14       if (!data.error) {
+15         setItems(data.items)
+16       }
+17       else {
+18         setError(data.error)
+19       }
+20 
+21       setLoading(false)
+22       setDebounced(false)
+23     }
+24 
+25     if (url) {
+26       setLoading(true)
+27       fetchItems()
+28     }
+29   }, [url, setDebounced])
+30 
+31   return [loading, items, error]
+32 }
+33 
+34 const useDebounce = (value, debounceDelay) =&gt; {
+35   const [debounced, setDebounced] = useState(false)
+36 
+37   useEffect(() =&gt; {
+38     setDebounced(false)
+39 
+40     if (value) {
+41       const timeout = setTimeout(() =&gt; {
+42         setDebounced(true)
+43       }, debounceDelay)
+44 
+45       return () =&gt; clearTimeout(timeout)
+46     }
+47   }, [value, debounceDelay])
+48 
+49   return [debounced, setDebounced]
+50 }
+51 
+52 const Solution = React.memo(() =&gt; {
+53   const URL = 'https://www.googleapis.com/books/v1/volumes?q='
+54   const inputRef = useRef()
+55 
+56   const [query, setQuery] = useState('')
+57   const [debounced, setDebounced] = useDebounce(query, 1000)
+58   const [loading, items, error] = useFetch(debounced ? `${URL}/${query}` : '', setDebounced)
+59 
+60   useEffect(() =&gt; {
+61     if (inputRef.current) {
+62       inputRef.current.focus()
+63     }
+64   }, [])
+65 
+66   return (
+67     &lt;div&gt;
+68       &lt;label htmlFor='query-input'&gt;Search For &lt;/label&gt;
+69       &lt;input ref={inputRef} type='text' onChange={e =&gt; setQuery(e.target.value)} id='query-input' /&gt;
+70 
+71       &lt;div style={{marginTop: '20px'}}&gt;
+72         { loading ? &lt;div&gt;Loading...&lt;/div&gt; :
+73           error   ? &lt;div&gt;{error.message}&lt;/div&gt; :
+74           items   ?
+75           &lt;div&gt;
+76             {items.map(i =&gt; 
+77               &lt;div key={i.id}&gt;{i.volumeInfo.title}&lt;/div&gt;
+78             )}
+79           &lt;/div&gt; : null
+80       }
+81       &lt;/div&gt;
+82     &lt;/div&gt;
+83   )
+84 })
+85 
+86 export default Solution
+      </pre>
+    <p></p>
+  </body> 
+</html>
+
+<p></p>
+
+<h1>Conclusion</h1>
+
+<p></p>

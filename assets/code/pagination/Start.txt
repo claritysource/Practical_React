@@ -1,0 +1,39 @@
+1  import React, {useState, useEffect} from 'react';
+2  import './App.css';
+3  
+4  const Solution = React.memo(() =&gt; {
+5    const [pageNumber] = useState(1)
+6    const [users, setUsers] = useState([])
+7  
+8    useEffect(() =&gt; {
+9      const fetchUsers = async () =&gt; {
+10       const URL = `https://cors-anywhere.herokuapp.com/https://randomuser.me/api/?page=${pageNumber}&results=10`
+11 
+12       try {
+13         const response = await fetch(`${URL}`, {
+14           method: "GET",
+15         });
+16         const json = await response.json();
+17         return setUsers(json.results);
+18       } catch (ex) {
+19         return null;
+20       }
+21     }
+22 
+23     fetchUsers()
+24   }, [pageNumber])
+25 
+26   return (
+27     &lt;div style={{marginTop: '40px'}}&gt;
+28       &lt;div&gt;
+29         {users && users.map(i =&gt; 
+30           &lt;div key={i.cell}&gt;
+31             {i.name.first} {i.name.last}
+32           &lt;/div&gt;
+33         )}
+34       &lt;/div&gt;
+35     &lt;/div&gt;
+36   )
+37 })
+38 
+39 export default Solution;

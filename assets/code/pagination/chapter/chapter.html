@@ -1,0 +1,328 @@
+<html xmlns='http://www.w3.org/1999/xhtml' xmlns:dk='http://www.kirsanov.com'>
+  <head>
+    <title>Pagination</title>  
+    <meta http-equiv='content-type' content='text/html; charset=UTF-8'/>  
+    <link rel='stylesheet' type='text/css' href='./css/book.css'/>  
+  </head>  
+  <body style='counter-reset: h1 2'> 
+    <h1 class='basic'>Pagination</h1> 
+      <p>This exercise involves...</p>
+
+    <h2>Rationale</h2>
+      <p></p>
+
+    <h2>Expectations</h2>
+      <p></p>
+
+    <h2>Level of Difficulty</h2>
+      <p>X out of 10</p>
+
+    <h2 id='concepts'>Concepts</h2> 
+      <p></p>
+    <h2 id='exercise-description'>The Exercise Description</h2> 
+      <p></p>
+    <p>The starting point for the Extract Component exercise is shown in the following figure.</p>
+    <img src="./images/start.png" width="921" height="874"/>
+    <p>...</p>
+    <pre id='sec1-1'>
+1  import React, {useState, useEffect} from 'react';
+2  import './App.css';
+3  
+4  const Solution = React.memo(() =&gt; {
+5    const [pageNumber] = useState(1)
+6    const [users, setUsers] = useState([])
+7  
+8    useEffect(() =&gt; {
+9      const fetchUsers = async () =&gt; {
+10       const URL = `https://cors-anywhere.herokuapp.com/https://randomuser.me/api/?page=${pageNumber}&results=10`
+11 
+12       try {
+13         const response = await fetch(`${URL}`, {
+14           method: "GET",
+15         });
+16         const json = await response.json();
+17         return setUsers(json.results);
+18       } catch (ex) {
+19         return null;
+20       }
+21     }
+22 
+23     fetchUsers()
+24   }, [pageNumber])
+25 
+26   return (
+27     &lt;div style={{marginTop: '40px'}}&gt;
+28       &lt;div&gt;
+29         {users && users.map(i =&gt; 
+30           &lt;div key={i.cell}&gt;
+31             {i.name.first} {i.name.last}
+32           &lt;/div&gt;
+33         )}
+34       &lt;/div&gt;
+35     &lt;/div&gt;
+36   )
+37 })
+38 
+39 export default Start;
+</pre>
+<p>...</p>
+
+    <h2 id='start'>The Solution</h2> 
+      <img src="./images/solution-1.png" width="921" height="874"/>
+      <p>...</p>
+      <img src="./images/solution-2.png" width="921" height="874"/>
+      <p>...</p>
+      <img src="./images/solution-3.png" width="921" height="874"/>
+      <p>...</p>
+      <p>The <code>Solution</code> component for this coding exercise is shown in the following listing.</p>
+      <pre id='sec1-1'>
+1  import React, {useState, useEffect} from 'react';
+2  import Spinner from './Spinner/Spinner'
+3  import './App.css';
+4  import Pagination from './Pagination/Pagination';
+5  
+6  const Solution = React.memo(() =&gt; {
+7    const [numPages] = useState(100)
+8    const [pageNumber, setPageNumber] = useState(1)
+9    const [users, setUsers] = useState([])
+10 
+11   useEffect(() =&gt; {
+12     const fetchUsers = async () =&gt; {
+13       const URL = `https://randomuser.me/api/?page=${pageNumber}&results=10`
+14 
+15       try {
+16         const response = await fetch(`${URL}`, {
+17           method: "GET",
+18         });
+19         const json = await response.json();
+20         return setUsers(json.results);
+21       } catch (ex) {
+22         return null;
+23       }
+24     }
+25 
+26     fetchUsers()
+27   }, [pageNumber])
+28 
+29   const updatePage = pageNum =&gt; {
+30     setUsers([])
+31     setPageNumber(pageNum)
+32   }
+33 
+34   return (
+35     &lt;div&gt;
+36       &lt;Pagination
+37         numPages={numPages}
+38         updatePage={pageNum =&gt; updatePage(pageNum)}
+39       /&gt;
+40 
+41       {users.length === 0 ? &lt;div style={{marginTop: '40px'}}&gt;&lt;Spinner /&gt;&lt;/div&gt; : 
+42         &lt;div style={{marginTop: '20px'}}&gt;
+43           &lt;div&gt;
+44             {users.map(i =&gt; 
+45               &lt;div key={i.cell}&gt;
+46                 {i.name.first} {i.name.last}
+47               &lt;/div&gt;
+48             )}
+49           &lt;/div&gt;
+50         &lt;/div&gt;
+51       }
+52     &lt;/div&gt;
+53   )
+54 })
+55 
+56 export default Solution;
+      <pre id='sec1-1'>
+1  import React, { useState } from 'react'
+2  import PageLinks from './PageLinks'
+3  import NextLink from './NextLink'
+4  import PreviousLink from './PreviousLink'
+5  import './Pagination.css'
+6  
+7  const Pagination = ({numPages, updatePage}) =&gt; {
+8    const [pageNumber, setPageNumber] = useState(1)
+9  
+10   const setPage = newPageNumber =&gt; {
+11     setPageNumber(newPageNumber)
+12     updatePage(newPageNumber)
+13   }
+14 
+15   return (
+16     numPages &gt; 1 &&
+17     &lt;div className='pagination-container'&gt;
+18       &lt;PreviousLink
+19         pageNumber={pageNumber}
+20         updatePage={setPage}
+21       /&gt;
+22 
+23       &lt;PageLinks
+24         pageNumber={pageNumber}
+25         numPages={numPages}
+26         updatePage={setPage}
+27       /&gt;
+28 
+29       &lt;NextLink
+30         pageNumber={pageNumber}
+31         numPages={numPages}
+32         updatePage={setPage}
+33       /&gt;
+34     &lt;/div&gt;
+35   )
+36 }
+37 
+38 export default Pagination
+      </pre>
+      <p>...</p>
+
+<pre id='sec1-1'>
+1  import React from 'react'
+2  import './Pagination.css'
+3  
+4  const PreviousLink = ({
+5    pageNumber,
+6    updatePage
+7  }) =&gt; {
+8    return (
+9      &lt;div
+10       className='prev btn-link pointer'
+11       onClick={() =&gt; updatePage(pageNumber - 1)}&gt;
+12       { pageNumber &gt; 1 ? 'Previous' : '' }
+13     &lt;/div&gt;
+14   )
+15 }
+16 
+17 export default PreviousLink
+</pre>
+<p>...</p>
+
+<pre id='sec1-1'>
+1  import React from 'react'
+2  import './Pagination.css'
+3  
+4  const PreviousLink = ({
+5    pageNumber,
+6    updatePage
+7  }) =&gt; {
+8    return (
+9      &lt;div
+10       className='prev btn-link pointer'
+11       onClick={() =&gt; updatePage(pageNumber - 1)}&gt;
+12       { pageNumber &gt; 1 ? 'Previous' : '' }
+13     &lt;/div&gt;
+14   )
+15 }
+16 
+17 export default PreviousLink
+</pre>
+<p>...</p>
+
+<pre id='sec1-1'>
+1  import React from 'react'
+2  import './Pagination.css'
+3  
+4  const NextLink = ({
+5    pageNumber,
+6    numPages,
+7    updatePage
+8  }) =&gt; {
+9    return (
+10     &lt;div
+11       className='next btn-link pointer'
+12       onClick={() =&gt; updatePage(pageNumber + 1)}&gt;
+13       { pageNumber &lt; numPages ? 'Next' : '' }
+14     &lt;/div&gt;
+15   )
+16 }
+17 
+18 export default NextLink
+</pre>
+<p>...</p>
+
+<pre id='sec1-1'>
+1  import React from 'react'
+2  import './Pagination.css'
+3  
+4  const PageLinks = ({pageNumber, numPages, updatePage}) =&gt; {
+5    const numLinks = getNumLinks()
+6    const possibleStart = Math.floor(pageNumber - numLinks/2)
+7    const start = possibleStart &gt; 0 ? possibleStart &gt; numPages + 1 - numLinks ?
+8                  numPages - numLinks + 1 : possibleStart : 1
+9  
+10   return createLinks(start)
+11 
+12   // Functions..................................................................
+13 
+14   function getNumLinks() {
+15     let result;
+16 
+17     if (numPages &lt; 3) {
+18       return 0
+19     }
+20     else {
+21       for (let i=1; i &lt;= 10; ++i) {
+22         if (i &lt; numPages) {
+23           result = i
+24         }
+25       }
+26 
+27       return result
+28     }
+29   }
+30 
+31   function createLinks(start) {
+32     const links = []
+33 
+34     for (let i=0; i &lt; numLinks; ++i) {
+35       start + i &lt;= numPages &&
+36       links.push(&lt;div
+37         key={start + i}
+38         onClick={() =&gt; updatePage(start + i)}
+39         className={start + i === pageNumber ?
+40                     "page-links" :
+41                     "page-links btn-link pointer"}
+42       &gt;
+43         {start + i}
+44       &lt;/div&gt;)
+45     }
+46 
+47     return links
+48   }
+49 }
+50 
+51 export default PageLinks
+</pre>
+<p>...</p>
+<pre id='sec1-1'>
+1  .pagination-container {
+2    display: flex;
+3    justify-content: center;
+4  }
+5  
+6  .next {
+7    display: inline-block;
+8    margin-left: 1em;
+9  }
+10 
+11 .prev {
+12   display: inline-block;
+13   margin-right: 1em;
+14 }
+15 
+16 .page-links {
+17   margin-left: 0.5em;
+18   margin-right: 0.5em;
+19   display: inline-block;
+20 }
+21 
+22 .btn-link {
+23   color: blue;
+24 }
+</pre>
+<p>...</p>
+
+<h1>Conclusion</h1>
+<p>...</p>
+
+<p></p>
+</body> 
+</html>

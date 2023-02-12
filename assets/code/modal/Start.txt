@@ -1,0 +1,21 @@
+1  import React from 'react';
+2  
+3  const Start = () =&gt; {
+4    const buttonStyle = {
+5      fontSize: '1.5em',
+6      backgroundColor: 'sky-blue',
+7      color: 'blue',
+8      cursor: 'pointer',
+9    };
+10 
+11   return (
+12     &lt;&gt;
+13       &lt;button 
+14         className='btn btn-primary'&gt;
+15         Show Modal
+16       &lt;/button&gt;
+17     &lt;/&gt;
+18   );
+19 }
+20 
+21 export default Start;

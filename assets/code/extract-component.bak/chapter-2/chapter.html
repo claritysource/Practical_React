@@ -1,0 +1,213 @@
+<html xmlns='http://www.w3.org/1999/xhtml' xmlns:dk='http://www.kirsanov.com'>
+  <head>
+    <title>Extracting Components</title>  
+    <meta http-equiv='content-type' content='text/html; charset=UTF-8'/>  
+    <link rel='stylesheet' type='text/css' href='./css/book.css'/>  
+  </head>  
+  <body style='counter-reset: h1 2'> 
+    <h1 class='basic'>Extracting Components</h1> 
+      <p>This exercise involves refactoring existing code by extracting a component.</p>
+
+    <h2>Rationale</h2>
+      <p>Extracting components is an essential part of a React developer's toolkit. It's a task that React developers routinely perform on a daily basis.</p>
+
+    <h2>Expectations</h2>
+      <p>A developer should be able to explain the benefits of extracting components from existing code.</p>
+
+    <h2>Level of Difficulty</h2>
+      <p>1 out of 10</p>
+
+    <h2 id='concepts'>Concepts</h2> 
+      <p>Extracting components entails removing some markup and related state from one component and encapsulating it a new component.</p>
+      
+      <p>Component extraction is based on the Extract Function pattern. You can read more about that pattern at https://refactoring.com/catalog/extractFunction.html.</p>
+      <p>Extracting components improves your code in the following ways.</p>
+      <ul>
+        <li>It simplifies the original component</li>
+        <li>It produces a more general component that can be used by other components</li>
+        <li>It reduces copy and pasting of code</li>
+      </ul>
+
+      <p>Ideally, the markup for a React component should only call other components because doing so increases the readability of the original component. It also encourages you to implement simpler, more understandable, and extensible, components.</p>
+      <p>Markup that does not merely use other components resembles HTML. Markup that resembles HTML is more difficult to read, understand, modify, and extend, than markup that exclusively invokes other components. You will see evidence of the stark contrast between markup that is restricted to invoking other components versus markup that resembles HTML in this coding exercise.</p>
+      <p>Of course, at some point you must resort to markup that does not merely use other components, but instead resembles HTML. That type of markup should be restricted to "leaf" components. A leaf component is a simple component that encapsulates a small bit of HTML functionality. The component that we will extract in this exercise is a leaf component.</p>
+
+      <p>In addition to simplifying the original component, extracting components produces more general components that in turn can be used by other components. As you implement React applications, you should strive to continually implement "UI" components. A UI component is a component that is divorced from any domain specific knowledge and encapsulates a small bit of HTML functionality.
+      <p>Most UI components will be leaf components whose markup resembles HTML. As a result, it is important to restrict UI components to one small piece of functionality that can easily be used by other, presumably domain-specific, components, although some UI components may be composed of other UI components that are not domain specific. In general, you should strive to implement as many general, reusable UI components as you can as those components will make future development much easier.</p>
+
+      <p>Finally, extracting components will reduce the amount of copying and pasting that you perform between components to a bare minimum. Copying and pasting is a violation of the DRY pattern and results in inconsistencies and bugs in your code. Ideally, you should not paste any code whatsover between your React components.</p>
+    <h2 id='exercise-description'>The Exercise Description</h2> 
+      <p>The starting point for the Extract Component exercise is shown in the following figure.</p>
+      <img src="./images/extract-component-start.png" width="921" height="574"/>
+
+      <p>The solution for the Extract Component exercise is shown in the following figure.</p>
+      <img src="./images/extract-component-solution.png" width="921" height="574"/>
+
+      <p>The only visible difference between the starting point and the solution in the preceding screenshots is the value displayed when the user selects an item from the dropdown list.</p>
+
+    <h2 id='start'>The Starting Point</h2> 
+      <p>The code for the exercise's starting point is shown in the following listing.</p>
+      <pre id='sec1-1'>
+import React, {useState} from 'react'
+import './App.css'
+
+const Start = () =&gt; {
+  const [selectedUser, setSelectedUser] = useState(1)
+
+  const users = [
+    { id: 1, name: 'Alice' },
+    { id: 2, name: 'Bill' },
+    { id: 3, name: 'Courtney' },
+    { id: 4, name: 'Daniel' },
+    { id: 5, name: 'Edward' },
+    { id: 6, name: 'Francis' },
+  ]
+
+  return (
+    &lt;div&gt;
+      &lt;div className='selected-user'&gt;Selected User: {selectedUser}&lt;/div&gt;
+      &lt;label className='dropdown-label'&gt;Users&lt;/label&gt;
+
+      &lt;select
+        className="custom-select"
+        style={{width: '10em'}}
+        value={selectedUser}
+        onChange={e =&gt; setSelectedUser(e.target.value)}
+      &gt;
+        {users.map((user) =&gt;
+          &lt;option
+            key={user.id}
+            value={user.id}
+          &gt;
+            {user.name}
+          &lt;/option&gt;
+        )}
+      &lt;/select&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default Start;
+</pre>
+
+<p>The pertinent CSS is shown in the following listing. Note that the <code>custom-select</code> CSS class used above is from Bootstrap.</p>
+<pre id='sec1-1'>
+.selected-user {
+  margin-bottom: 1em;
+}
+
+.dropdown-label {
+  margin-right: 1em;
+}
+</pre>
+
+<p>The starting point for this coding exercise is a simple component that provides a dropdown list and displays the index of the currently selected item from the dropdown.</p>
+<p>The goal of this exercise is to extract the code for the dropdown into a <code>Dropdown</code> component. The <code>Dropdown</code> component must be a general component that can be used for any list of JavaScript objects.</p>
+<p>The exercise also contains an additional twist: You must show the name of the user selected in the dropdown, instead of the index. Most companies that impose coding exercises on their candidates will include at least one such twist, so you should be prepared for such eventualities.</p>
+<p>Notice that it takes some time to understand the markup in the preceding listing that creates the dropdown menu. That markup consists of a <code>select</code> element that contains <code>option</code> elements. The options are created by iterating over an array of JavaScript objects and creating a corresponding <code>option</code> element for each item in the array.</p>
+<p>You cannot merely glance at the <code>Solution</code> component's markup and immediately understand what it does. You have to grok the elements and how they are created, in addition to understanding that the <code>select</code> element has an <code>onChange</code> event handler that React invokes when the user selects an item from the dropdown. It's less than 15 lines of JSX overall, but it will still take the average React developer a minute or so to understand exactly how it works. That minute or so is not a big deal, but in the real world, the markup for most React domain-specific components can easily include 10 or more such markup segments, which exponentially increases the amount of time it takes to understand the code. Maintaing and updating code like that is a chore. Let's see how we can use the Extract Component pattern to reduce that burden.</p>
+
+    <h2 id='start'>The Solution</h2> 
+      <p>The <code>Solution</code> component for this coding exercise is shown in the following listing.</p>
+      <pre id='sec1-1'>
+const Solution = () =&gt; {
+  const [selectedUser, setSelectedUser] = useState(1)
+
+  const users = [
+    { id: 1, name: 'Alice' },
+    { id: 2, name: 'Bill' },
+    { id: 3, name: 'Courtney' },
+    { id: 4, name: 'Daniel' },
+    { id: 5, name: 'Edward' },
+    { id: 6, name: 'Francis' },
+  ]
+
+  const getUsername = () =&gt; users[selectedUser-1].name
+
+  return (
+    &lt;div&gt;
+      &lt;div className='selected-user'&gt;Selected User: {getUsername()}&lt;/div&gt;
+    
+      &lt;Dropdown
+        label='Users'
+        items={users}
+        value={selectedUser}
+        valueProperty='id'
+        displayProperty='name'
+        handleOnChange={e =&gt; setSelectedUser(e.target.name)}
+        width='10em'
+      /&gt;
+    &lt;/div&gt;
+  )
+}
+      </pre>
+    <p></p>
+  </body> 
+</html>
+
+<p>The first thing to notice about the previous listing is that the markup for the Solution component is much easer to understand than the original version. It's immediately apparent that the application displays the selected user and provides a dropdown whose items are the ones in the </code>users</code> array.</p>
+<p>The previous listing also shows the name of the selected user instead of the selected index with the <code>getUsername()</code> function.</p>
+<p>The markup for the <code>Solution</code> component does not provide any clues as to how the <code>Dropdown</code> component is implemented. For that, you must look at the component's implementation, which is shown in the following listing.</p>
+<pre id='sec1-1'>
+import React, {useState} from 'react'
+import './App.css'
+
+const Dropdown = ({
+  label,
+  items,
+  value,
+  valueProperty,
+  displayProperty,
+  handleOnChange,
+  width,
+}) =&gt; {
+  return (
+    &lt;&gt;
+      &lt;label
+        className="dropdown-label"&gt;
+          {label}
+      &lt;/label&gt;
+
+      &lt;select
+        className="custom-select"
+        style={{width}}
+        value={value}
+        onChange={handleOnChange}
+      &gt;
+        {items.map((item, key) =&gt;
+          &lt;option
+            key={key}
+            value={item[valueProperty]}
+          &gt;
+            {item[displayProperty]}
+          &lt;/option&gt;
+        )}
+      &lt;/select&gt;
+    &lt;/&gt;
+  )
+}
+</pre>
+<p>The <code>Dropdown</code> component has the following props.</p>
+<ul>
+  <li><i>label</i> The label for the dropdown</li>
+  <li><i>items</i> The items displayed in the dropdown</li>
+  <li><i>value</i> The current selected value</li>
+  <li><i>valueProperty</i> The name of the property used to store the value</li>
+  <li><i>displayProperty</i> The name of the property used to display the currently selected valoue</li>
+  <li><i>width</i> The width of the component</li>
+</ul>
+
+<p>The <code>Dropdown</code> component can be used for any array of JavaScript objects because it uses the <code>valueProperty</code> and <code>displayProperty</code> props to access the value stored in the dropdown and the displayed value, respectively. Users of the <code>Dropdown</code> component can also specify the width of the dropdown with the <code>width</code> prop.</p>
+
+<p>The <code>Dropdown</code> component is useful for the following reasons</p>
+<ul>
+  <li>It makes it easy to create a dropdown</li>
+  <li>The <code>Dropdown</code> component can be reused many times by different types of components</li>
+  <li>It eliminates the need to manually map over an array of JavaScript objects to create the options</li>
+  <li>It automatically assigns a <code>key</code> property to each item. This is something that is often overlooked, even by experienced React developers.</li>
+</ul>
+
+<h1>Conclusion</h1>
+
+<p>In this coding exercise we discussed extracting a component from an existing component's markup. That extraction is a commonplace task for React developers.</p>
+<p>Extracting components results in many benefits, including the creation of a general component that can be reused in many different domain-specific situations.</p>

@@ -1,0 +1,30 @@
+.Instructions {
+  margin: 0 auto;
+  margin-bottom: 20px;
+  width: 90%;
+  overflow: scroll;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.1em;
+}
+
+ul {
+  text-align: left;
+  list-style: none;
+  line-height: 1.5em;
+}
+
+ol {
+  margin-bottom: 10px;
+}
+
+.heading {
+  margin-bottom: 10px;
+}
+
+.circle-li {
+  list-style: inside;
+}
+
+.edit-icon {
+  cursor: pointer;
+}

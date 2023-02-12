@@ -1,0 +1,72 @@
+1  import React, { useState } from 'react';
+2  import { FaRegEdit } from 'react-icons/fa'
+3  
+4  const Start = () =&gt; {
+5    const [tableData, setTableData] = useState([
+6      { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+7      { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+8      { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+9      { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+10     { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+11     { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+12     { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+13     { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+14   ])
+15 
+16   return (
+17     &lt;&gt;
+18       &lt;EditableTable
+19         tableData={tableData}
+20         setTableData={setTableData}
+21       /&gt;
+22 
+23       &lt;table&gt;
+24         Data:
+25         {
+26           tableData.map(row =&gt;
+27             &lt;tr&gt;
+28               &lt;td&gt;{row.firstName}&lt;/td&gt;
+29               &lt;td&gt;{row.lastName}&lt;/td&gt;
+30               &lt;td&gt;{row.age}&lt;/td&gt;
+31             &lt;/tr&gt;
+32           )
+33         }
+34       &lt;/table&gt;
+35     &lt;/&gt;
+36   )
+37 }
+38 
+39 const EditableTable = ({
+40   tableData,
+41   setTableData,
+42 }) =&gt; {
+43   return (
+44     &lt;div className='table-container'&gt;
+45       &lt;table className='table'&gt;
+46         &lt;thead&gt;
+47           &lt;tr&gt;
+48             &lt;th className='first-name-header'&gt;First Name&lt;/th&gt;
+49             &lt;th className='last-name-header'&gt;Last Name&lt;/th&gt;
+50             &lt;th className='age-header'&gt;Age&lt;/th&gt;
+51             &lt;th className='actions-header'&gt;Actions&lt;/th&gt;
+52           &lt;/tr&gt;
+53         &lt;/thead&gt;
+54 
+55         &lt;tbody&gt;
+56           {
+57             tableData.map(data =&gt;
+58               &lt;tr&gt;
+59                 &lt;td&gt;{data.firstName}&lt;/td&gt;
+60                 &lt;td&gt;{data.lastName}&lt;/td&gt;
+61                 &lt;td&gt;{data.age}&lt;/td&gt;
+62                 &lt;td&gt;&lt;FaRegEdit /&gt;&lt;/td&gt;
+63               &lt;/tr&gt;
+64             )
+65           }
+66         &lt;/tbody&gt;
+67       &lt;/table&gt;
+68     &lt;/div&gt;
+69   )
+70 }
+71 
+72 export default Start;

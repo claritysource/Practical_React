@@ -1,0 +1,56 @@
+import React, {useState, useEffect} from 'react';
+import Spinner from './Spinner/Spinner'
+import './App.css';
+import Pagination from './Pagination/Pagination';
+
+const Solution = React.memo(() =&gt; {
+  const [numPages] = useState(100)
+  const [pageNumber, setPageNumber] = useState(1)
+  const [users, setUsers] = useState([])
+
+  useEffect(() =&gt; {
+    const fetchUsers = async () =&gt; {
+      const URL = `https://randomuser.me/api/?page=${pageNumber}&results=10`
+
+      try {
+        const response = await fetch(`${URL}`, {
+          method: "GET",
+        });
+        const json = await response.json();
+        return setUsers(json.results);
+      } catch (ex) {
+        return null;
+      }
+    }
+
+    fetchUsers()
+  }, [pageNumber])
+
+  const updatePage = pageNum =&gt; {
+    setUsers([])
+    setPageNumber(pageNum)
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;Pagination
+        numPages={numPages}
+        updatePage={pageNum =&gt; updatePage(pageNum)}
+      /&gt;
+
+      {users.length === 0 ? &lt;div style={{marginTop: '40px'}}&gt;&lt;Spinner /&gt;&lt;/div&gt; : 
+        &lt;div style={{marginTop: '20px'}}&gt;
+          &lt;div&gt;
+            {users.map(i =&gt; 
+              &lt;div key={i.cell}&gt;
+                {i.name.first} {i.name.last}
+              &lt;/div&gt;
+            )}
+          &lt;/div&gt;
+        &lt;/div&gt;
+      }
+    &lt;/div&gt;
+  )
+})
+
+export default Solution;

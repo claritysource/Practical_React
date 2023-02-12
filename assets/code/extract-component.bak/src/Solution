@@ -1,0 +1,70 @@
+import React, {useState} from 'react'
+import './App.css'
+
+const Dropdown = ({
+  label,
+  items,
+  value,
+  valueProperty,
+  displayProperty,
+  handleOnChange,
+  width,
+}) =&gt; {
+  return (
+    &lt;&gt;
+      &lt;label
+        className="dropdown-label"&gt;
+          {label}
+      &lt;/label&gt;
+
+      &lt;select
+        className="custom-select"
+        style={{width}}
+        value={value}
+        onChange={handleOnChange}
+      &gt;
+        {items.map((item, key) =&gt;
+          &lt;option
+            key={key}
+            value={item[valueProperty]}
+          &gt;
+            {item[displayProperty]}
+          &lt;/option&gt;
+        )}
+      &lt;/select&gt;
+    &lt;/&gt;
+  )
+}
+
+const Solution = () =&gt; {
+  const [selectedUser, setSelectedUser] = useState(1)
+
+  const users = [
+    { id: 1, name: 'Alice' },
+    { id: 2, name: 'Bill' },
+    { id: 3, name: 'Courtney' },
+    { id: 4, name: 'Daniel' },
+    { id: 5, name: 'Edward' },
+    { id: 6, name: 'Francis' },
+  ]
+
+  const getUsername = () =&gt; users[selectedUser-1].name
+
+  return (
+    &lt;div&gt;
+      &lt;div className='selected-user'&gt;Selected User: {getUsername()}&lt;/div&gt;
+    
+      &lt;Dropdown
+        label='Users'
+        items={users}
+        value={selectedUser}
+        valueProperty='id'
+        displayProperty='name'
+        handleOnChange={e =&gt; setSelectedUser(e.target.value)}
+        width='10em'
+      /&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default Solution;

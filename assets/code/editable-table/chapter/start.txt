@@ -1,0 +1,72 @@
+import React, { useState } from 'react';
+import { FaRegEdit } from 'react-icons/fa'
+
+const Start = () =&gt; {
+  const [tableData, setTableData] = useState([
+    { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+    { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+    { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+    { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+    { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+    { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+    { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+    { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+  ])
+
+  return (
+    &lt;&gt;
+      &lt;EditableTable
+        tableData={tableData}
+        setRableData={setTableData}
+      /&gt;
+
+      &lt;table&gt;
+        Data:
+        {
+          tableData.map(row =&gt;
+            &lt;tr&gt;
+              &lt;td&gt;{row.firstName}&lt;/td&gt;
+              &lt;td&gt;{row.lastName}&lt;/td&gt;
+              &lt;td&gt;{row.age}&lt;/td&gt;
+            &lt;/tr&gt;
+          )
+        }
+      &lt;/table&gt;
+    &lt;/&gt;
+  )
+}
+
+const EditableTable = ({
+  tableData,
+  setTableData,
+}) =&gt; {
+  return (
+    &lt;div className='table-container'&gt;
+      &lt;table className='table'&gt;
+        &lt;thead&gt;
+          &lt;tr&gt;
+            &lt;th className='first-name-header'&gt;First Name&lt;/th&gt;
+            &lt;th className='last-name-header'&gt;Last Name&lt;/th&gt;
+            &lt;th className='age-header'&gt;Age&lt;/th&gt;
+            &lt;th className='actions-header'&gt;Actions&lt;/th&gt;
+          &lt;/tr&gt;
+        &lt;/thead&gt;
+
+        &lt;tbody&gt;
+          {
+            tableData.map(data =&gt;
+              &lt;tr&gt;
+                &lt;td&gt;{data.firstName}&lt;/td&gt;
+                &lt;td&gt;{data.lastName}&lt;/td&gt;
+                &lt;td&gt;{data.age}&lt;/td&gt;
+                &lt;td&gt;&lt;FaRegEdit /&gt;&lt;/td&gt;
+              &lt;/tr&gt;
+            )
+          }
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default Start;

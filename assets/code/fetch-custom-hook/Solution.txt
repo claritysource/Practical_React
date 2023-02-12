@@ -1,0 +1,90 @@
+1  import React, {useRef, useState, useEffect} from 'react';
+2  import './App.css';
+3  
+4  const useFetch = (url) =&gt; {
+5    const [loading, setLoading] = useState(false)
+6    const [error, setError] = useState('')
+7    const [items, setItems] = useState([])
+8  
+9    // Called after every render when url changes
+10   useEffect(() =&gt; {
+11     let mounted = true // Must be mounted if useEffect() is called
+12 
+13     const fetchItems = async () =&gt; {
+14       const response = await fetch(url)
+15       const data = await response.json()
+16 
+17       // Only update state if mounted
+18       if (mounted) {
+19         if (!data.error) {
+20           setItems(data.items)
+21         }
+22         else {
+23           setError(data.error)
+24         }
+25 
+26         setLoading(false)
+27       }
+28     }
+29 
+30     if (url) {
+31       // Could unmount between the first line of useEffect() and here,
+32       // but highly unlikely
+33       if (mounted) {
+34         setLoading(true)
+35         fetchItems()
+36       }
+37     }
+38 
+39     // The return function is called before the next time the
+40     // effect is invoked
+41     return () =&gt; mounted = false
+42   }, [url])
+43 
+44   return [loading, items, error]
+45 }
+46 
+47 const Solution = React.memo(() =&gt; {
+48   const URL = 'https://www.googleapis.com/books/v1/volumes?q='
+49   const inputRef = useRef();
+50   const [query, setQuery] = useState('')
+51   const [url, setUrl] = useState('')
+52   const [loading, items, error] = useFetch(url)
+53   
+54   useEffect(() =&gt; {
+55     if (inputRef.current) {
+56       inputRef.current.focus()
+57     }
+58   }, [])
+59 
+60   const submitForm = e =&gt; {
+61     e.preventDefault()
+62     setUrl(prevUrl =&gt; query ? `${URL}/${query}` : '')
+63   }
+64 
+65   return (
+66     &lt;div&gt;
+67       &lt;form onSubmit={e =&gt; submitForm(e)}&gt;
+68         &lt;label htmlFor='query-input'&gt;Search For &lt;/label&gt;
+69         &lt;input
+70           ref={inputRef}
+71           type='text'
+72           onChange={e =&gt; setQuery(e.target.value)} id='query-input' /&gt;
+73       &lt;/form&gt;
+74 
+75       &lt;div style={{marginTop: '20px'}}&gt;
+76         { loading ? &lt;div&gt;Loading...&lt;/div&gt; :
+77           error   ? &lt;div&gt;{error.message}&lt;/div&gt; :
+78           items   ?
+79           &lt;div&gt;
+80             {items.map(i =&gt; 
+81               &lt;div key={i.id}&gt;{i.volumeInfo.title}&lt;/div&gt;
+82             )}
+83           &lt;/div&gt; : null
+84       }
+85       &lt;/div&gt;
+86     &lt;/div&gt;
+87   )
+88 })
+89 
+90 export default Solution;

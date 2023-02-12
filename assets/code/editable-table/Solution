@@ -1,0 +1,161 @@
+import React, { useState } from 'react';
+import { FaRegEdit, FaRegCheckCircle, FaRegTimesCircle } from 'react-icons/fa'
+
+const Solution = () =&gt; {
+  const [tableData, setTableData] = useState([
+    { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+    { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+    { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+    { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+    { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+    { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+    { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+    { firstName: 'Daniel', lastName: 'Woodward', age: 25 },
+  ])
+
+  return (
+    &lt;&gt;
+      &lt;EditableTable
+        tableData={tableData}
+        setTableData={setTableData}
+      /&gt;
+
+      &lt;table&gt;
+        Data:
+        {
+          tableData.map(row =&gt;
+            &lt;tr&gt;
+              &lt;td&gt;{row.firstName}&lt;/td&gt;
+              &lt;td&gt;{row.lastName}&lt;/td&gt;
+              &lt;td&gt;{row.age}&lt;/td&gt;
+            &lt;/tr&gt;
+          )
+        }
+      &lt;/table&gt;
+    &lt;/&gt;
+  )
+}
+
+const EditableTable = ({
+  tableData,
+  setTableData,
+}) =&gt; {
+  const [tableDataCopy, setTableDataCopy] = useState([...tableData])
+  const [rowsBeingEdited, setRowsBeingEdited] = useState([])
+
+  const edit = index =&gt; {
+    if (!rowsBeingEdited.includes(index)) {
+      setRowsBeingEdited([
+        ...rowsBeingEdited,
+        index,
+      ])
+    }
+  }
+
+  const setProperty = (index, property, value) =&gt; {
+    const newTableData = [...tableDataCopy]
+
+    newTableData[index] = {
+      ...newTableData[index],
+      [property]: value,
+    }
+
+    setTableDataCopy(newTableData)
+  }
+
+  const stopEditing = index =&gt; {
+    setRowsBeingEdited(rowsBeingEdited.filter(row =&gt; row !== index))
+  }
+
+  const cancelEdit = index =&gt; {
+    stopEditing(index)
+    tableDataCopy[index] = tableData[index]
+  }
+
+  const saveEdits = index =&gt; {
+    stopEditing(index)
+    setTableData(tableDataCopy)
+  }
+
+  return (
+    &lt;div className='table-container'&gt;
+      &lt;table className='table'&gt;
+        &lt;thead&gt;
+          &lt;tr&gt;
+            &lt;th className='first-name-header'&gt;First Name&lt;/th&gt;
+            &lt;th className='last-name-header'&gt;Last Name&lt;/th&gt;
+            &lt;th className='age-header'&gt;Age&lt;/th&gt;
+            &lt;th className='actions-header'&gt;Actions&lt;/th&gt;
+          &lt;/tr&gt;
+        &lt;/thead&gt;
+
+        &lt;tbody&gt;
+          {
+            tableDataCopy.map((data, i) =&gt;
+              &lt;tr
+                key={i}&gt;
+                {rowsBeingEdited.includes(i) ?
+                  &lt;&gt;
+                    &lt;td&gt;
+                      &lt;input
+                        className='first-name-input'
+                        value={data.firstName}
+                        onChange={e =&gt; setProperty(i, 'firstName', e.target.value)}
+                      /&gt;
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                      &lt;input
+                        className='last-name-input'
+                        value={data.lastName}
+                        onChange={e =&gt; setProperty(i, 'lastName', e.target.value)}
+                      /&gt;
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                      &lt;input
+                        className='age-input'
+                        value={data.age}
+                        onChange={e =&gt; setProperty(i, 'age', e.target.value)}
+                      /&gt;
+                    &lt;/td&gt;
+                  &lt;/&gt;
+                  :
+                  &lt;&gt;
+                    &lt;td&gt;{data.firstName}&lt;/td&gt;
+                    &lt;td&gt;{data.lastName}&lt;/td&gt;
+                    &lt;td&gt;{data.age}&lt;/td&gt;
+                  &lt;/&gt;
+                }
+                &lt;td&gt;
+                  &lt;div className='actions'&gt;
+                    {rowsBeingEdited.includes(i) ?
+                      &lt;&gt;
+                        &lt;td className='edit-icon'&gt;
+                          &lt;FaRegCheckCircle
+                            onClick={e =&gt; saveEdits(i)}
+                          /&gt;
+                        &lt;/td&gt;
+                        &lt;td className='edit-icon'&gt;
+                          &lt;FaRegTimesCircle
+                            onClick={() =&gt; cancelEdit(i)}
+                          /&gt;
+                        &lt;/td&gt;
+                      &lt;/&gt;
+                      :
+                      &lt;td className='edit-icon'&gt;
+                        &lt;FaRegEdit
+                          onClick={() =&gt; edit(i)}
+                        /&gt;
+                      &lt;/td&gt;
+                    }
+                  &lt;/div&gt;
+                &lt;/td&gt;
+              &lt;/tr&gt;
+            )
+          }
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default Solution;

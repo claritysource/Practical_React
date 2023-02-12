@@ -1,0 +1,17 @@
+import React from 'react'
+import './Pagination.css'
+
+const PreviousLink = ({
+  pageNumber,
+  updatePage
+}) =&gt; {
+  return (
+    &lt;div
+      className='prev btn-link pointer'
+      onClick={() =&gt; updatePage(pageNumber - 1)}&gt;
+      { pageNumber &gt; 1 ? 'Previous' : '' }
+    &lt;/div&gt;
+  )
+}
+
+export default PreviousLink

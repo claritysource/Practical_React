@@ -1,0 +1,178 @@
+<html xmlns='http://www.w3.org/1999/xhtml' xmlns:dk='http://www.kirsanov.com'>
+  <head>
+    <title>Spinner</title>  
+    <meta http-equiv='content-type' content='text/html; charset=UTF-8'/>  
+    <link rel='stylesheet' type='text/css' href='./css/book.css'/>  
+  </head>  
+  <body style='counter-reset: h1 2'> 
+    <h1 class='basic'>Spinner with Backdrop</h1> 
+      <p>This exercise involves...</p>
+
+    <h2>Rationale</h2>
+      <p></p>
+
+    <h2>Expectations</h2>
+      <p></p>
+
+    <h2>Level of Difficulty</h2>
+      <p>1 out of 10</p>
+
+    <h2 id='concepts'>Concepts</h2> 
+      <p></p>
+    <h2 id='exercise-description'>The Exercise Description</h2> 
+      <p></p>
+    <p>The starting point for the Extract Component exercise is shown in the following figure.</p>
+    <img src="./images/start.png" width="921" height="704"/>
+      
+      <pre id='sec1-1'>
+1  import React from 'react';
+2  
+3  const SpinnerWithBackdrop = ({
+4    children,
+5  }) =&gt; {
+6    return (
+7      &lt;div&gt;
+8        {children}
+9      &lt;/div&gt;
+10   )
+11 }
+12 const Start = () =&gt; {
+13   return (
+14     &lt;SpinnerWithBackdrop&gt;
+15       &lt;div&gt;
+16         &lt;button&gt;
+17           Show Spinner for two seconds
+18         &lt;/button&gt;
+19       &lt;/div&gt;
+20     &lt;/SpinnerWithBackdrop&gt;
+21   )
+22 }
+23 
+24 export default Start;
+</pre>
+
+<p></p>
+
+    <h2 id='start'>The Solution</h2> 
+      <img src="./images/solution.png" width="921" height="704"/>
+      <p>The <code>Solution</code> component for this coding exercise is shown in the following listing.</p>
+      <pre id='sec1-1'>
+1  import React, { useEffect, useState } from 'react';
+2  import SpinnerWithBackdrop from './SpinnerWithBackdrop'
+3  
+4  const Solution = () =&gt; {
+5    const [busy, setBusy] = useState(false)
+6  
+7    useEffect(() =&gt; {
+8      if (busy) {
+9        setTimeout(() =&gt; {
+10         setBusy(false)
+11       }, 2000)
+12     }
+13   }, [busy, setBusy])
+14 
+15   return (
+16     &lt;SpinnerWithBackdrop condition={busy}&gt;
+17       &lt;div&gt;
+18         &lt;button
+19           onClick={() =&gt; setBusy(true)}&gt;
+20             Show Spinner for two seconds
+21         &lt;/button&gt;
+22       &lt;/div&gt;
+23     &lt;/SpinnerWithBackdrop&gt;
+24   )
+25 }
+26 
+27 export default Solution;
+      </pre>
+    <p>...</p>
+      <pre id='sec1-1'>
+1  import React from 'react';
+2  import './Spinner.css';
+3  
+4  const Spinner = ({size}) =&gt; {
+5    return (
+6      &lt;div className='outerDiv fadein-quickly'&gt;
+7        &lt;div
+8          style={size &&
+9          {
+10           width: size,
+11           height: size,
+12           borderWidth: size/10,
+13         }}
+14         className='spinner'&gt;
+15       &lt;/div&gt;
+16     &lt;/div&gt;
+17   );
+18 }
+19 
+20 export default Spinner;
+      </pre>
+    <p>...</p>
+      <pre id='sec1-1'>
+1  .spinner {
+2    border: 8px solid #e0e0e0; /* Light grey */
+3    border-top: 8px solid #3498db; /* Blue */
+4    border-radius: 50%;
+5    width: 80px;
+6    height: 80px;
+7    animation: spin 2s linear infinite;
+8  }
+9  
+ 10 @keyframes spin {
+11   0% {
+12       transform: rotate(0deg);
+13   }
+14   100% {
+15       transform: rotate(360deg);
+16   }
+17 }
+18 
+19 .outerDiv {
+20   display: flex;
+21   align-items: center;
+22   justify-content: center;
+23 }
+24 
+25 .busy-spinner-container {
+26   display: flex;
+27   justify-content: center;
+28   align-items: center;
+29   position: absolute;
+30   top: 0;
+31   left: 0;
+32   width: 100%;
+33   height: 100%;
+34   z-index: 1000;
+35 }
+      </pre>
+    <p>...</p>
+      <pre id='sec1-1'>
+1  import React from 'react'
+2  import Spinner from './Spinner'
+3  
+4  const SpinnerWithBackdrop = ({
+5    condition,
+6    bgColor='rgba(0,0,0,0.4)',
+7    children,
+8  }) =&gt; 
+9    &lt;div&gt;
+10   {condition &&
+11     &lt;div className='busy-spinner-container'
+12          style={condition ? {backgroundColor: bgColor} : {}}&gt;
+13       &lt;Spinner /&gt;
+14     &lt;/div&gt;
+15   }
+16     {children}
+17   &lt;/div&gt;
+18 
+19 export default SpinnerWithBackdrop
+      </pre>
+  </body> 
+</html>
+
+<p></p>
+
+<h1>Conclusion</h1>
+
+<p></p>

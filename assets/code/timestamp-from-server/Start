@@ -1,0 +1,30 @@
+import React from 'react';
+import './App.css';
+
+// Sleep for the specified delay in milliseconds
+const sleep = delay =&gt; {} // Step 1: Implement the sleep() function
+
+const getDateFromServer = async () =&gt; {
+  await sleep(1000)
+
+  if (Math.random() &gt; 0.5) {
+    return {
+      date: new Date()
+    }
+  }
+  else {
+    return {
+      error: 'Server error'
+    }
+  }
+}
+
+const Start = () =&gt; {
+  return (
+    &lt;div&gt;
+      Show date or server error here
+    &lt;/div&gt;
+  )
+}
+
+export default Start;
