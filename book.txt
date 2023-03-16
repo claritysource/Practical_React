@@ -7,16 +7,16 @@ This chapter discusses the Exercise application itself. For the sake of illustra
 
 
 [[9433]]
-.The Starting Point (9433)
+.The Starting Point
 image::assets/images/exercise-application/start.png[width=700]
 The goal of the exercise is to echo the contents of the text field as the user types. The solution is shown below.
 
 
 
 [[9575]]
-.The Solution (9575)
+.The Solution
 image::assets/images/exercise-application/solution.png[width=700]
-With that simple example in mind, let's look at the components in the Exercise application!
+With that simple example in mind, let's look at the components in the Exercise application.
 
 
 
@@ -66,7 +66,7 @@ Finally, the component is exported as the default export.
 
 [[9447]]
 
-.The App Component (9447)
+.The App Component
 ==============================
 -----
 import {useState} from 'react'
@@ -130,7 +130,7 @@ When the user clicks on the span in the Instructions component's footer, React i
 
 [[9915]]
 
-.The Instructions Component (9915)
+.The Instructions Component
 ==============================
 -----
 import React from 'react'
@@ -191,7 +191,7 @@ The InstructionsIcon component displays a Plus icon using the FaPlus icon from t
 
 [[9906]]
 
-.The InstructionsIcon Component (9906)
+.The InstructionsIcon Component
 ==============================
 -----
 import React from 'react'
@@ -223,7 +223,7 @@ The instructions are stored in an array and are displayed using the `map` functi
 
 [[9979]]
 
-.The InstructionsText Component (9979)
+.The InstructionsText Component
 ==============================
 -----
 import React from 'react'
@@ -264,7 +264,7 @@ The simple component listed below renders a text input.
 
 [[9621]]
 
-.The Start Component (9621)
+.The Start Component
 ==============================
 -----
 const Start = () =>
@@ -290,7 +290,7 @@ The Solution component, which also varies for each exercise, is the implementati
 
 [[9773]]
 
-.The Solution Component (9773)
+.The Solution Component
 ==============================
 -----
 import React, { useState } from "react"
