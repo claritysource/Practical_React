@@ -7,11 +7,9 @@ const InstructionsText = () => {
 
   return (
     <ul className="instructions-line fadein">
-      {
-        instructions.map(line =>
-          <li className="circle-li">{line}</li>
-        )
-      }
+      {instructions.map(line =>
+          <li className='circle-li'>{line}</li>
+        )}
     </ul>
   )
 }

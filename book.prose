@@ -3,19 +3,29 @@ PROSE 10683
 
 = The Exercise Application
 
-This chapter discusses the Exercise application itself. For the sake of illustration, let's assume we have an exercise as shown below.
+This chapter discusses the Exercise application itself, so you can see how to implement the rest of the book's exercises.
+
+To implement an exercise, you'll only edit `Start.js` files, but it's good to know how this simple application is implemented. We will also explore few elementary best practices along the way.
+
+For the sake of illustration, let's assume we have an exercise as shown below.
 
 PROSE 9433
 
-The goal of the exercise is to echo the contents of the text field as the user types. The solution is shown below.
+The goal of the exercise is to echo the contents of the text field as the user types. Notice the `Show Solution` button, whose CSS makes it look more like text instead of a button.
+
+Every exercise contains a textual description, but the `Show Solution` button lets you take a look at how the solution behaves.
+
+If you click on the `Show Solution` button, the exercise application swaps out a `Start` component for a `Solution` component, and the text of the button changes to `Hide Solution`, as shown below.
 
 PROSE 9575
+
+The goal of this exercise is to demonstrate proficiency with simple state management in React.
 
 With that simple example in mind, let's look at the components in the Exercise application.
 
 PROSE 7763
 
-The application consists of three main components: Instructions, Start, and Solution.
+The Instructions component contains the exercise instructions, while the InstructionsIcon component displays an icon next to the instructions. The InstructionsText component contains the actual text of the instructions. The Start component displays a button that the user can click to start the exercise, while the Solution component displays the solution code when the user clicks a button. Finally, the App component is the top-level component that renders all of the other components.
 
 The Instructions component displays the title of the exercise, a set of instructions for the user, and a button to toggle the display of the solution. When the user clicks the button, the state of the `solutionVisible` variable changes, which controls whether the Solution or Start component is displayed.
 

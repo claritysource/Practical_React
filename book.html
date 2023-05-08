@@ -739,26 +739,31 @@ asciidoc.install();
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
-<div class="paragraph"><p>This chapter discusses the Exercise application itself. For the sake of illustration, let&#8217;s assume we have an exercise as shown below.</p></div>
+<div class="paragraph"><p>This chapter discusses the Exercise application itself, so you can see how to implement the rest of the book&#8217;s exercises.</p></div>
+<div class="paragraph"><p>To implement an exercise, you&#8217;ll only edit <code>Start.js</code> files, but it&#8217;s good to know how this simple application is implemented. We will also explore few elementary best practices along the way.</p></div>
+<div class="paragraph"><p>For the sake of illustration, let&#8217;s assume we have an exercise as shown below.</p></div>
 <div class="imageblock" id="9433">
 <div class="content">
 <img src="assets/images/exercise-application/start.png" alt="assets/images/exercise-application/start.png" width="700" />
 </div>
 <div class="title">Figure 1. The Starting Point</div>
 </div>
-<div class="paragraph"><p>The goal of the exercise is to echo the contents of the text field as the user types. The solution is shown below.</p></div>
+<div class="paragraph"><p>The goal of the exercise is to echo the contents of the text field as the user types. Notice the <code>Show Solution</code> button, whose CSS makes it look more like text instead of a button.</p></div>
+<div class="paragraph"><p>Every exercise contains a textual description, but the <code>Show Solution</code> button lets you take a look at how the solution behaves.</p></div>
+<div class="paragraph"><p>If you click on the <code>Show Solution</code> button, the exercise application swaps out a <code>Start</code> component for a <code>Solution</code> component, and the text of the button changes to <code>Hide Solution</code>, as shown below.</p></div>
 <div class="imageblock" id="9575">
 <div class="content">
 <img src="assets/images/exercise-application/solution.png" alt="assets/images/exercise-application/solution.png" width="700" />
 </div>
 <div class="title">Figure 2. The Solution</div>
 </div>
+<div class="paragraph"><p>The goal of this exercise is to demonstrate proficiency with simple state management in React.</p></div>
 <div class="paragraph"><p>With that simple example in mind, let&#8217;s look at the components in the Exercise application.</p></div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="7763">The Code  (7763)</h3>
-<div class="paragraph"><p>The application consists of three main components: Instructions, Start, and Solution.</p></div>
+<div class="paragraph"><p>The Instructions component contains the exercise instructions, while the InstructionsIcon component displays an icon next to the instructions. The InstructionsText component contains the actual text of the instructions. The Start component displays a button that the user can click to start the exercise, while the Solution component displays the solution code when the user clicks a button. Finally, the App component is the top-level component that renders all of the other components.</p></div>
 <div class="paragraph"><p>The Instructions component displays the title of the exercise, a set of instructions for the user, and a button to toggle the display of the solution. When the user clicks the button, the state of the <code>solutionVisible</code> variable changes, which controls whether the Solution or Start component is displayed.</p></div>
 <div class="paragraph"><p>The Start component is where you perform the exercise. It is hidden when the <code>solutionVisible</code> variable is true.</p></div>
 <div class="paragraph"><p>The Solution component displays the solution to the exercise, which is shown when the <code>solutionVisible</code> variable is true.</p></div>
@@ -837,43 +842,35 @@ export default App</code></pre>
 import InstructionsIcon from './InstructionsIcon'
 import InstructionsText from './InstructionsText'
 
-const Instructions = React.memo(({
-  onClick,
+const Instructions = ({
   title,
-  buttonText}) =&gt; {
-    return (
-        &lt;div className="instructions-container center-text fadein"&gt;
-          &lt;div className="instructions-card card card-icon"
-               style={{borderRadius: '20px 20px 20px 20px'}}
-          &gt;
-            &lt;div className="card-body-icon"&gt;
-              &lt;div className="text-center card-title card-icon-title"&gt;
-                  &lt;div style={{ marginBottom: '1em', height: '61.99px' }}&gt;
-                      &lt;div style={{ height: '61.99px' }}&gt;
-                        &lt;span className="card-icon-dot"&gt;&lt;/span&gt;
-                      &lt;/div&gt;
-                      &lt;InstructionsIcon /&gt;
-                  &lt;/div&gt;
-                  &lt;h4 className="card-icon-title"&gt;{title}&lt;/h4&gt;
+  buttonText}) =&gt;
+    &lt;div className="instructions-container center-text fadein"&gt;
+      &lt;div className="card instructions-card card-icon"&gt;
+        &lt;div className="card-body-icon"&gt;
+          &lt;div className="text-center card-title card-icon-title"&gt;
+              &lt;div&gt;
+                &lt;span className="card-icon-dot"&gt;&lt;/span&gt;
               &lt;/div&gt;
-              &lt;div style={{
-                  display: 'flex',
-                  justifyContent: 'center'
-                  }}
-                  className="card-text card-icon-text"&gt;
-                  &lt;InstructionsText /&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
 
-            &lt;div className="card-footer" onClick={onClick} style={{borderRadius: '0 0 20px 20px'}}&gt;
-                &lt;span className="stretched-link btn btn-link btn-block fadein pointer"&gt;
-                    {buttonText}
-                &lt;/span&gt;
-            &lt;/div&gt;
+              &lt;InstructionsIcon /&gt;
+
+              &lt;h4 className="card-icon-title"&gt;
+                {title}
+              &lt;/h4&gt;
+          &lt;/div&gt;
+          &lt;div className="card-text card-icon-text"&gt;
+              &lt;InstructionsText /&gt;
           &lt;/div&gt;
         &lt;/div&gt;
-    )
-})
+
+        &lt;div className="card-footer"&gt;
+          &lt;span className="stretched-link btn btn-link btn-block fadein pointer"&gt;
+              {buttonText}
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
 
 export default Instructions</code></pre>
 </div></div>
@@ -919,11 +916,9 @@ const InstructionsText = () =&gt; {
 
   return (
     &lt;ul className="instructions-line fadein"&gt;
-      {
-        instructions.map(line =&gt;
-          &lt;li className="circle-li"&gt;{line}&lt;/li&gt;
-        )
-      }
+      {instructions.map(line =&gt;
+          &lt;li className='circle-li'&gt;{line}&lt;/li&gt;
+        )}
     &lt;/ul&gt;
   )
 }
@@ -996,7 +991,7 @@ export default Solution</code></pre>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2023-03-16 13:56:22 MDT
+ 2023-05-08 13:50:30 MDT
 </div>
 </div>
 </body>

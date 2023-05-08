@@ -41,6 +41,7 @@ opacity: 0;
   background-color: #fff;
   background-clip: border-box;
   width: 100vw;
+  border-radius: 20px 20px 20px 20px;
 }
 
 .card-icon {
@@ -52,13 +53,6 @@ opacity: 0;
   flex: 1 1 auto;
   min-height: 1px;
   padding: 2rem;
-}
-
-.card-body-icon {
-  flex: 1 1 auto;
-  min-height: 1px;
-  padding: 1rem;
-  border-radius: 20px 20px 20px 20px;
 }
 
 .card .card-title {
@@ -73,6 +67,11 @@ opacity: 0;
 
 .text-center {
   text-align: center !important;
+}
+
+.card-text {
+  display: flex;
+  justify-content: center;
 }
 
 .card-text:last-child {
@@ -91,6 +90,7 @@ opacity: 0;
   padding-bottom: 13px;
   background: #77319c;
   position: relative;
+  border-radius: 0 0 20 20;
 }
 
 .card-footer:last-child {
@@ -138,21 +138,6 @@ opacity: 0;
 
 .pointer {
   cursor: pointer;
-}
-
-.instructions-card {
-  width: 70vw;
-  border-radius: 50px;
-  border-radius: 20px 20px 20px 20px;
-}
-
-.instructions-container {
-  display: flex;
-  justify-content: center;
-  padding-top: 1em;
-  padding-left: 2em;
-  padding-right: 2em;
-  border-radius: 20px 20px 20px 20px;
 }
 
 .selected-user {

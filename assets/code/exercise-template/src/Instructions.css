@@ -7,6 +7,26 @@
   font-size: 1.1em;
 }
 
+.instructions-card {
+  width: 70vw;
+}
+
+.instructions-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 1em;
+  padding-left: 2em;
+  padding-right: 2em;
+  border-radius: 20px 20px 20px 20px;
+}
+
+.card-icon {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 1rem;
+  border-radius: 20px 20px 20px 20px;
+}
+
 ul {
   text-align: left;
   list-style: none;

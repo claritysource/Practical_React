@@ -2,20 +2,40 @@
 
 
 
-This chapter discusses the Exercise application itself. For the sake of illustration, let's assume we have an exercise as shown below.
+This chapter discusses the Exercise application itself, so you can see how to implement the rest of the book's exercises.
+
+
+
+To implement an exercise, you'll only edit `Start.js` files, but it's good to know how this simple application is implemented. We will also explore few elementary best practices along the way.
+
+
+
+For the sake of illustration, let's assume we have an exercise as shown below.
 
 
 
 [[9433]]
 .The Starting Point
 image::assets/images/exercise-application/start.png[width=700]
-The goal of the exercise is to echo the contents of the text field as the user types. The solution is shown below.
+The goal of the exercise is to echo the contents of the text field as the user types. Notice the `Show Solution` button, whose CSS makes it look more like text instead of a button.
+
+
+
+Every exercise contains a textual description, but the `Show Solution` button lets you take a look at how the solution behaves.
+
+
+
+If you click on the `Show Solution` button, the exercise application swaps out a `Start` component for a `Solution` component, and the text of the button changes to `Hide Solution`, as shown below.
 
 
 
 [[9575]]
 .The Solution
 image::assets/images/exercise-application/solution.png[width=700]
+The goal of this exercise is to demonstrate proficiency with simple state management in React.
+
+
+
 With that simple example in mind, let's look at the components in the Exercise application.
 
 
@@ -23,7 +43,7 @@ With that simple example in mind, let's look at the components in the Exercise a
 [[7763]]
 The Code  (7763)
 ~~~~~~~~~~~~~~~~
-The application consists of three main components: Instructions, Start, and Solution.
+The Instructions component contains the exercise instructions, while the InstructionsIcon component displays an icon next to the instructions. The InstructionsText component contains the actual text of the instructions. The Start component displays a button that the user can click to start the exercise, while the Solution component displays the solution code when the user clicks a button. Finally, the App component is the top-level component that renders all of the other components.
 
 
 
@@ -137,43 +157,35 @@ import React from 'react'
 import InstructionsIcon from './InstructionsIcon'
 import InstructionsText from './InstructionsText'
 
-const Instructions = React.memo(({
-  onClick,
+const Instructions = ({
   title,
-  buttonText}) => {
-    return (
-        <div className="instructions-container center-text fadein">
-          <div className="instructions-card card card-icon"
-               style={{borderRadius: '20px 20px 20px 20px'}}
-          >
-            <div className="card-body-icon">
-              <div className="text-center card-title card-icon-title">
-                  <div style={{ marginBottom: '1em', height: '61.99px' }}>
-                      <div style={{ height: '61.99px' }}>
-                        <span className="card-icon-dot"></span>
-                      </div>
-                      <InstructionsIcon />
-                  </div>
-                  <h4 className="card-icon-title">{title}</h4>
+  buttonText}) =>
+    <div className="instructions-container center-text fadein">
+      <div className="card instructions-card card-icon">
+        <div className="card-body-icon">
+          <div className="text-center card-title card-icon-title">
+              <div>
+                <span className="card-icon-dot"></span>
               </div>
-              <div style={{
-                  display: 'flex',
-                  justifyContent: 'center'
-                  }}
-                  className="card-text card-icon-text">
-                  <InstructionsText />
-              </div>
-            </div>
 
-            <div className="card-footer" onClick={onClick} style={{borderRadius: '0 0 20px 20px'}}>
-                <span className="stretched-link btn btn-link btn-block fadein pointer">
-                    {buttonText}
-                </span>
-            </div>
+              <InstructionsIcon />
+
+              <h4 className="card-icon-title">
+                {title}
+              </h4>
+          </div>
+          <div className="card-text card-icon-text">
+              <InstructionsText />
           </div>
         </div>
-    )
-})
+
+        <div className="card-footer">
+          <span className="stretched-link btn btn-link btn-block fadein pointer">
+              {buttonText}
+          </span>
+        </div>
+      </div>
+    </div>
 
 export default Instructions
 ----
@@ -235,11 +247,9 @@ const InstructionsText = () => {
 
   return (
     <ul className="instructions-line fadein">
-      {
-        instructions.map(line =>
-          <li className="circle-li">{line}</li>
-        )
-      }
+      {instructions.map(line =>
+          <li className='circle-li'>{line}</li>
+        )}
     </ul>
   )
 }
