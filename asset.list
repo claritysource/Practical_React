@@ -1,0 +1,27 @@
+H2 Overview
+
+H3 Rationale
+
+H3 Motivation
+
+H3 Expectations
+
+H3 Level of Difficulty
+
+H3 Concepts
+
+H2 The Exercise Implementation
+
+  images/extract-component/start.png 900 The Starting Point
+  images/extract-component/solution.png 900 The Solution 
+
+H3 The Starting Point
+
+  code/extract-component/src/Start.js The Starting Code
+
+H3 The Solution
+
+  code/extract-component/src/Solution.js The Solution
+  code/extract-component/src/Dropdown.js The Dropdown Component
+
+H2 Conclusion
